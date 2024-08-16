@@ -1,12 +1,5 @@
 import { GameController, sendData } from "./trysterollup";
-
 const $ = (s) => document.querySelector(s);
-const $$ = (s) => document.querySelectorAll(s);
-
-const pre = $("pre");
-function log(text) {
-  pre.textContent = text;
-}
 
 const game = new GameController(printPlayers);
 game.localData.board = get2dArray(10, 10, "x");
@@ -47,6 +40,10 @@ function printPlayers() {
   const boardData = game.localData.board ?? [[]];
   const board = boardData.map((row) => row.join(" ")).join("\n");
   log(board + "\nplayers:\n" + players);
+}
+
+function log(text) {
+  $("pre").textContent = text;
 }
 
 function get2dArray(rows, cols, val = "") {

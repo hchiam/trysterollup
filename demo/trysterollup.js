@@ -70,74 +70,75 @@ export class GameController {
   }
 
   #initializeDataEventListeners() {
-    // tell newcomers
+    this.#signalNewcomers();
+    this.#listenForPeersSendingData();
+    this.#listenForPeersLeaving();
+  }
+
+  #signalNewcomers() {
     room.onPeerJoin((peerId) => {
-      if (!(peerId in this.localData)) this.localData[peerId] = { playerId: 0 };
-      if (
-        !isNaN(this.localData[peerId].playerId) &&
-        this.localData[peerId].playerId === 0
-      ) {
-        const maxPlayerId = Math.max(
-          ...Object.values(this.localData).map((x) =>
-            isNaN(x.playerId) ? 0 : Number(x.playerId)
-          )
-        );
-        this.localData[peerId].playerId = Math.max(
-          maxPlayerId + 1,
-          Object.keys(this.localData).length
-        );
-        sendData(this.localData, peerId);
-      }
+      this.#syncIncomingPeerPlayerId(peerId);
+
       if (this.debug) console.log("onPeerJoin", peerId);
+
       this.updateUi();
     });
+  }
 
-    // listen for peers sending data
+  #listenForPeersSendingData() {
     getData((data, peerId) => {
       if (this.debugMore) {
         console.log(
-          `_______|\n\ngetData this.localData:\n${JSON.stringify(
-            this.localData
-          )}`
+          `-----|\n\this.localData BEFORE:\n${JSON.stringify(this.localData)}`
         );
-        console.log("getData data", JSON.stringify(data));
+        console.log("getData data peerId", JSON.stringify(data), peerId);
       }
+
       Object.entries(data).forEach((x) => {
         this.localData[x[0]] = x[1];
       });
-      const before = JSON.stringify(this.localData);
-      let needToSendData = false;
-      if (!(peerId in this.localData)) this.localData[peerId] = { playerId: 0 };
-      if (
-        !isNaN(this.localData[peerId].playerId) &&
-        this.localData[peerId].playerId === 0
-      ) {
-        const maxPlayerId = Math.max(
-          ...Object.values(this.localData).map((x) =>
-            isNaN(x.playerId) ? 0 : Number(x.playerId)
-          )
-        );
-        this.localData[peerId].playerId = Math.max(
-          maxPlayerId + 1,
-          Object.keys(this.localData).length
-        );
-        needToSendData = true;
-      }
-      if (before !== JSON.stringify(this.localData)) {
-        needToSendData = true;
-      }
-      if (needToSendData) sendData(this.localData);
+
+      this.#syncIncomingPeerPlayerId(peerId);
+
       if (this.debugMore) {
         console.log(
-          `getData this.localData AFTER:\n${JSON.stringify(
-            this.localData
-          )}\n\n|_______`
+          `this.localData AFTER:\n${JSON.stringify(this.localData)}\n\n|-----`
         );
       }
+
       this.updateUi();
     });
+  }
 
-    // listen for peers leaving
+  #syncIncomingPeerPlayerId(peerId) {
+    const dataBefore = JSON.stringify(this.localData);
+
+    if (!(peerId in this.localData)) this.localData[peerId] = { playerId: 0 };
+
+    const mustGiveThemAPeerId =
+      !isNaN(this.localData[peerId].playerId) &&
+      this.localData[peerId].playerId === 0;
+
+    if (mustGiveThemAPeerId) {
+      const maxPlayerId = Math.max(
+        ...Object.values(this.localData).map((x) =>
+          isNaN(x.playerId) ? 0 : Number(x.playerId)
+        )
+      );
+
+      this.localData[peerId].playerId = Math.max(
+        maxPlayerId + 1,
+        Object.keys(this.localData).length
+      );
+    }
+
+    let needToSendData =
+      mustGiveThemAPeerId || dataBefore !== JSON.stringify(this.localData);
+
+    if (needToSendData) sendData(this.localData);
+  }
+
+  #listenForPeersLeaving() {
     room.onPeerLeave((peerId) => {
       delete this.localData[peerId];
       if (this.debug) console.log("onPeerLeave", peerId);
