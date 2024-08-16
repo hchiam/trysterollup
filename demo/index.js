@@ -1,17 +1,15 @@
-import { GameController, selfId, sendData } from "./trysterollup";
+import { GameController, sendData } from "./trysterollup";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => document.querySelectorAll(s);
 
 const pre = $("pre");
-
-log(`my peerId: ${selfId}`);
-
 function log(text) {
-  pre.textContent = `my selfId: ${selfId}\n\n${text}\n`;
+  pre.textContent = text;
 }
 
 const game = new GameController(printPlayers);
+game.localData.board = get2dArray(10, 10, "x");
 game.startGame();
 
 $("#update").addEventListener("click", () => {
@@ -21,31 +19,40 @@ $("#update").addEventListener("click", () => {
 });
 
 $("#play").addEventListener("click", () => {
+  game.localData.board[0][0] = "o";
   game.play();
 });
 
 // button clicks work on both desktop and mobile and keyboard
 $("#left").addEventListener("click", () => {
-  game.updatePosition(selfId, -1, 0);
+  game.updatePosition(-1, 0);
 });
 $("#right").addEventListener("click", () => {
-  game.updatePosition(selfId, +1, 0);
+  game.updatePosition(+1, 0);
 });
 $("#up").addEventListener("click", () => {
-  game.updatePosition(selfId, 0, -1);
+  game.updatePosition(0, -1);
 });
 $("#down").addEventListener("click", () => {
-  game.updatePosition(selfId, 0, +1);
+  game.updatePosition(0, +1);
 });
 
 function printPlayers() {
   const playersData = Object.entries(game.localData).filter(
-    (x) => !x[0].startsWith("_")
+    (x) => x[0] !== "board"
   );
   const players = playersData
     .map((x) => `${x[0]}: ${JSON.stringify(x[1])}`)
     .join("\n");
-  const boardData = game.localData._board ?? [[]];
+  const boardData = game.localData.board ?? [[]];
   const board = boardData.map((row) => row.join(" ")).join("\n");
   log(board + "\nplayers:\n" + players);
+}
+
+function get2dArray(rows, cols, val = "") {
+  return new Array(rows).fill(null).map(() =>
+    new Array(cols).fill(null).map(() => {
+      return val;
+    })
+  );
 }

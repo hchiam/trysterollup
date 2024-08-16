@@ -4,13 +4,9 @@
  */
 
 import {
-  selfId as si,
-  joinRoom as jr,
+  selfId,
+  joinRoom,
 } from "https://cdn.skypack.dev/pin/trystero@v0.18.0-r4w3880OHw2o0euVPNYJ/mode=imports,min/optimized/trystero/nostr.js";
-
-export const selfId = si;
-
-export const joinRoom = jr;
 
 // .../?room=someNumberOrId
 export const roomId =
@@ -41,6 +37,8 @@ export class GameController {
   constructor(updateUi) {
     this.updateUi = updateUi;
     this.localData = { [selfId]: { playerId: 0 } };
+    this.debug = true;
+    this.debugMore = false;
 
     // tell other peers currently in the room
     sendData(this.localData);
@@ -49,20 +47,19 @@ export class GameController {
   }
 
   startGame() {
-    this.localData._board = get2dArray(10, 10, "x");
     this.#update(this.localData);
+    return this;
   }
 
   play() {
-    this.localData._board[0][0] = "o";
     this.#update(this.localData);
   }
 
-  updatePosition(peerId, xDelta = 0, yDelta = 0) {
-    const { x, y } = this.localData[peerId];
-    this.localData[peerId].x =
+  updatePosition(xDelta = 0, yDelta = 0) {
+    const { x, y } = this.localData[selfId];
+    this.localData[selfId].x =
       x === undefined ? xDelta : Number(x) + Number(xDelta);
-    this.localData[peerId].y =
+    this.localData[selfId].y =
       y === undefined ? yDelta : Number(y) + Number(yDelta);
     this.#update(this.localData);
   }
@@ -91,14 +88,20 @@ export class GameController {
         );
         sendData(this.localData, peerId);
       }
-      console.log("onPeerJoin", peerId);
+      if (this.debug) console.log("onPeerJoin", peerId);
       this.updateUi();
     });
 
     // listen for peers sending data
     getData((data, peerId) => {
-      // console.log("_______|\n\n", "getData this.localData", JSON.stringify(this.localData));
-      // console.log("getData data", JSON.stringify(data));
+      if (this.debugMore) {
+        console.log(
+          `_______|\n\ngetData this.localData:\n${JSON.stringify(
+            this.localData
+          )}`
+        );
+        console.log("getData data", JSON.stringify(data));
+      }
       Object.entries(data).forEach((x) => {
         this.localData[x[0]] = x[1];
       });
@@ -124,25 +127,21 @@ export class GameController {
         needToSendData = true;
       }
       if (needToSendData) sendData(this.localData);
-      // console.log(
-      //   `getData this.localData AFTER:\n${JSON.stringify(this.localData)}\n\n|_______`
-      // );
+      if (this.debugMore) {
+        console.log(
+          `getData this.localData AFTER:\n${JSON.stringify(
+            this.localData
+          )}\n\n|_______`
+        );
+      }
       this.updateUi();
     });
 
     // listen for peers leaving
     room.onPeerLeave((peerId) => {
       delete this.localData[peerId];
-      console.log("onPeerLeave", peerId);
+      if (this.debug) console.log("onPeerLeave", peerId);
       this.updateUi();
     });
   }
-}
-
-function get2dArray(rows, cols, val = "") {
-  return new Array(rows).fill(null).map(() =>
-    new Array(cols).fill(null).map(() => {
-      return val;
-    })
-  );
 }
