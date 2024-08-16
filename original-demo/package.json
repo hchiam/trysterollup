@@ -1,0 +1,12 @@
+{
+  "name": "hchiam-trysterollup-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run vite",
+    "dev": "vite",
+    "build": "vite build",
+    "deploy": "vite build; surge dist https://hchiam-trysterollup-demo.surge.sh/"
+  }
+}
