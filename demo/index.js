@@ -1,7 +1,7 @@
 import { GameController, sendData } from "./trysterollup";
 const $ = (s) => document.querySelector(s);
 
-const game = new GameController(printPlayers);
+const game = new GameController({ updateUi: printPlayers });
 game.localData.board = get2dArray(10, 10, "x");
 game.startGame();
 

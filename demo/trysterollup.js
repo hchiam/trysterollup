@@ -34,16 +34,20 @@ export function sendData(data) {
 }
 
 export class GameController {
-  constructor(updateUi) {
-    this.updateUi = updateUi;
+  constructor({ updateUi, generatingDocumentation = false }) {
+    const someFunction = function () {};
+
+    this.updateUi = updateUi || someFunction;
     this.localData = { [selfId]: { playerId: 0 } };
     this.debug = true;
     this.debugMore = false;
 
-    // tell other peers currently in the room
-    sendData(this.localData);
+    if (!generatingDocumentation) {
+      // tell other peers currently in the room
+      sendData(this.localData);
 
-    this.#initializeDataEventListeners();
+      this.#initializeDataEventListeners();
+    }
   }
 
   startGame() {
