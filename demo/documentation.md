@@ -1,5 +1,7 @@
 # GameController Documentation:
 
+(Generated from generateDocumentation.js to clipboard.)
+
 ## Methods:
 
 `constructor({ updateUi, generatingDocumentation = false })`

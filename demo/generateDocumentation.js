@@ -45,6 +45,8 @@ class DocumentationGenerator {
   generateDocumentation(yourClassHere = this.classRef) {
     const content = `# ${yourClassHere.name} Documentation:
 
+(Generated from generateDocumentation.js to clipboard.)
+
 ## Methods:
 
 ${this.getMethods(yourClassHere).join("\n\n")}
