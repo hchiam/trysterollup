@@ -13,7 +13,7 @@ $("#update").addEventListener("click", () => {
 
 $("#play").addEventListener("click", () => {
   game.localData.board[0][0] = "o";
-  game.play();
+  game.update();
 });
 
 // button clicks work on both desktop and mobile and keyboard
@@ -30,6 +30,18 @@ $("#down").addEventListener("click", () => {
   game.updatePosition(0, +1);
 });
 
+function get2dArray(rows, cols, val = "") {
+  return new Array(rows).fill(null).map(() =>
+    new Array(cols).fill(null).map(() => {
+      return val;
+    })
+  );
+}
+
+function log(text) {
+  $("pre").textContent = text;
+}
+
 function printPlayers() {
   const playersData = Object.entries(game.localData).filter(
     (x) => x[0] !== "board"
@@ -40,16 +52,4 @@ function printPlayers() {
   const boardData = game.localData.board ?? [[]];
   const board = boardData.map((row) => row.join(" ")).join("\n");
   log(board + "\nplayers:\n" + players);
-}
-
-function log(text) {
-  $("pre").textContent = text;
-}
-
-function get2dArray(rows, cols, val = "") {
-  return new Array(rows).fill(null).map(() =>
-    new Array(cols).fill(null).map(() => {
-      return val;
-    })
-  );
 }

@@ -47,26 +47,28 @@ export class GameController {
   }
 
   startGame() {
-    this.#update(this.localData);
+    this.update();
     return this;
   }
 
-  play() {
-    this.#update(this.localData);
-  }
-
-  updatePosition(xDelta = 0, yDelta = 0) {
-    const { x, y } = this.localData[selfId];
-    this.localData[selfId].x =
-      x === undefined ? xDelta : Number(x) + Number(xDelta);
-    this.localData[selfId].y =
-      y === undefined ? yDelta : Number(y) + Number(yDelta);
-    this.#update(this.localData);
-  }
-
-  #update() {
+  update(dataOverride) {
+    if (dataOverride) this.localData = dataOverride;
     this.updateUi();
     sendData(this.localData);
+    return this;
+  }
+
+  updatePosition(xDelta = 0, yDelta = 0, peerId = selfId) {
+    const { x, y } = this.localData[peerId];
+
+    this.localData[peerId].x =
+      x === undefined ? xDelta : Number(x) + Number(xDelta);
+    this.localData[peerId].y =
+      y === undefined ? yDelta : Number(y) + Number(yDelta);
+
+    this.update();
+
+    return this;
   }
 
   #initializeDataEventListeners() {
@@ -77,7 +79,7 @@ export class GameController {
 
   #signalNewcomers() {
     room.onPeerJoin((peerId) => {
-      this.#syncIncomingPeerPlayerId(peerId);
+      this.#syncPlayerIdOfIncomingPeer(peerId);
 
       if (this.debug) console.log("onPeerJoin", peerId);
 
@@ -98,7 +100,7 @@ export class GameController {
         this.localData[x[0]] = x[1];
       });
 
-      this.#syncIncomingPeerPlayerId(peerId);
+      this.#syncPlayerIdOfIncomingPeer(peerId);
 
       if (this.debugMore) {
         console.log(
@@ -110,16 +112,16 @@ export class GameController {
     });
   }
 
-  #syncIncomingPeerPlayerId(peerId) {
+  #syncPlayerIdOfIncomingPeer(peerId) {
     const dataBefore = JSON.stringify(this.localData);
 
     if (!(peerId in this.localData)) this.localData[peerId] = { playerId: 0 };
 
-    const mustGiveThemAPeerId =
+    const mustGiveThemANewPlayerId =
       !isNaN(this.localData[peerId].playerId) &&
       this.localData[peerId].playerId === 0;
 
-    if (mustGiveThemAPeerId) {
+    if (mustGiveThemANewPlayerId) {
       const maxPlayerId = Math.max(
         ...Object.values(this.localData).map((x) =>
           isNaN(x.playerId) ? 0 : Number(x.playerId)
@@ -133,7 +135,7 @@ export class GameController {
     }
 
     let needToSendData =
-      mustGiveThemAPeerId || dataBefore !== JSON.stringify(this.localData);
+      mustGiveThemANewPlayerId || dataBefore !== JSON.stringify(this.localData);
 
     if (needToSendData) sendData(this.localData);
   }
