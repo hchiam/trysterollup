@@ -2,20 +2,20 @@
 
 ## Methods:
 
-constructor({ updateUi, generatingDocumentation = false })
+`constructor({ updateUi, generatingDocumentation = false })`
 
-startGame()
+`startGame()`
 
-update(dataOverride)
+`update(dataOverride)`
 
-updatePosition(xDelta = 0, yDelta = 0, peerId = selfId)
+`updatePosition(xDelta = 0, yDelta = 0, peerId = selfId)`
 
 ## Properties:
 
-updateUi: function
+`updateUi`: function
 
-localData: object
+`localData`: object
 
-debug: boolean
+`debug`: boolean
 
-debugMore: boolean
+`debugMore`: boolean

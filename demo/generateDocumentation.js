@@ -17,7 +17,7 @@ class DocumentationGenerator {
           methodString.indexOf("(") + 1,
           methodString.indexOf(")")
         );
-        return `${m}(${params.trim()})`;
+        return `\`${m}(${params.trim()})\``;
       });
 
     if (this.print) {
@@ -32,7 +32,7 @@ class DocumentationGenerator {
       new yourClassHere({ generatingDocumentation: true }) // because must call new () instance to get "this." variables
     ).map((entry) => {
       const [key, value] = entry;
-      return `${key}: ${typeof value}`;
+      return `\`${key}\`: ${typeof value}`;
     });
 
     if (this.print) {
