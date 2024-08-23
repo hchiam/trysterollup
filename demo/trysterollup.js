@@ -42,7 +42,7 @@ export class GameController {
     this.debug = true;
     this.debugMore = false;
     this.gamepads = {};
-    this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: optional param value?:number for analog button
+    this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
     if (!generatingDocumentation) {
