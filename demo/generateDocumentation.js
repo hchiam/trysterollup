@@ -17,7 +17,7 @@ class DocumentationGenerator {
           methodString.indexOf("(") + 1,
           methodString.indexOf(")")
         );
-        return `\`${m}(${params.trim()})\``;
+        return `\`\`\`js\n${m}(${params.trim()})\n\`\`\``;
       });
 
     if (this.print) {
