@@ -33,8 +33,8 @@ $("#password").addEventListener("change", () => {
 });
 $("#join").addEventListener("click", () => {
   console.log("trying to join");
-  const roomId = String('$("#roomId").value' || roomId_fromUrl);
-  const password = String('$("#password").value' || "silly_pwd");
+  const roomId = $("#roomId").value || roomId_fromUrl;
+  const password = $("#password").value || "silly_pwd";
   game.join(
     {
       appId: "hchiam-trysterollup-demo",
@@ -46,7 +46,7 @@ $("#join").addEventListener("click", () => {
 });
 
 $("#update").addEventListener("click", () => {
-  game.sendData(game.localData);
+  game.update(game.localData);
   // console.log("#update click", JSON.stringify(game.localData));
   printPlayers();
 });
