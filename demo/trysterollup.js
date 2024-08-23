@@ -174,6 +174,7 @@ export class GameController {
 
       this.#pollGamepads((gamepads) => {
         if (gamepads && gamepads.length) {
+          // assuming only 1 gamepad:
           this.#mapGamepadToActions(gamepads[0], {
             buttonListeners: this.buttonListeners,
             joystickListeners: this.joystickListeners,
