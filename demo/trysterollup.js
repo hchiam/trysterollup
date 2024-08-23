@@ -31,19 +31,26 @@ export function sendData(data) {
 }
 
 export class GameController {
-  constructor({ updateUi, generatingDocumentation = false }) {
-    const someFunction = function () {};
-
-    this.updateUi = updateUi || someFunction;
+  constructor({
+    updateUi,
+    buttonListeners = [], // array of functions
+    joystickListeners = [], // array of functions that take in a number
+    generatingDocumentation = false,
+  }) {
+    this.updateUi = updateUi || function () {};
     this.localData = { [selfId]: { playerId: 0 } };
     this.debug = true;
     this.debugMore = false;
+    this.gamepads = {};
+    this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: optional param value?:number for analog button
+    this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
     if (!generatingDocumentation) {
       // tell other peers currently in the room
       sendData(this.localData);
 
       this.#initializeDataEventListeners();
+      this.#initializeGamepadSupport();
     }
   }
 
@@ -147,5 +154,74 @@ export class GameController {
       if (this.debug) console.log("onPeerLeave", peerId);
       this.updateUi();
     });
+  }
+
+  #initializeGamepadSupport() {
+    const isGamePadApiSupported = "getGamepads" in navigator;
+    if (isGamePadApiSupported) {
+      window.addEventListener("gamepadconnected", (event) => {
+        if (this.debug) console.log("gamepad connected:", event.gamepad);
+        setTimeout(() => {
+          this.updateUi();
+        }, 100);
+      });
+      window.addEventListener("gamepaddisconnected", (event) => {
+        if (this.debug) console.log("gamepad disconnected:", event.gamepad);
+        setTimeout(() => {
+          this.updateUi();
+        }, 100);
+      });
+
+      this.#pollGamepads((gamepads) => {
+        if (gamepads && gamepads.length) {
+          this.#mapGamepadToActions(gamepads[0], {
+            buttonListeners: this.buttonListeners,
+            joystickListeners: this.joystickListeners,
+          });
+        }
+      });
+    }
+  }
+
+  #pollGamepads(processGamePads = () => {}) {
+    this.gamepads = navigator.getGamepads();
+    processGamePads(this.gamepads);
+    window.requestAnimationFrame(
+      this.#pollGamepads.bind(this, processGamePads)
+    );
+  }
+
+  /**
+   * use listener indices to map gamepad buttons/axes to listeners:
+   *
+   * buttonListeners[0]: () => {} // TODO: optional param value?:number for analog button
+   *
+   * joystickListeners[0]: (number) => {}
+   */
+  #mapGamepadToActions(
+    gamepad,
+    { buttonListeners = [], joystickListeners = [] }
+  ) {
+    if (!gamepad) return;
+
+    const gamepadButtons = gamepad.buttons;
+    if (gamepadButtons && gamepadButtons.length) {
+      for (let i = 0; i < gamepadButtons.length; i++) {
+        const gamepadButton = gamepadButtons[i];
+        if (gamepadButton.pressed || gamepadButton.touched) {
+          const buttonListener = buttonListeners[i];
+          buttonListener?.(gamepadButton);
+        }
+      }
+    }
+
+    const gamepadAxes = gamepad.axes;
+    if (gamepadAxes && gamepadAxes.length) {
+      for (let i = 0; i < gamepadAxes.length; i++) {
+        const gamepadAxis = gamepadAxes[i];
+        const joystickListener = joystickListeners[i];
+        joystickListener?.(gamepadAxis);
+      }
+    }
   }
 }

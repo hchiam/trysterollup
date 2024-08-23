@@ -1,9 +1,13 @@
 import { GameController, sendData } from "./trysterollup";
 const $ = (s) => document.querySelector(s);
 
-const game = new GameController({ updateUi: printPlayers });
+const game = new GameController({
+  updateUi: updateUi,
+  buttonListeners: [up, right, down, left],
+});
 game.localData.board = get2dArray(10, 10, "x");
 game.startGame();
+updateUi();
 
 $("#update").addEventListener("click", () => {
   sendData(game.localData);
@@ -42,6 +46,11 @@ function log(text) {
   $("pre").textContent = text;
 }
 
+function updateUi() {
+  printPlayers();
+  showGamepadButtons(game.gamepads);
+}
+
 function printPlayers() {
   const playersData = Object.entries(game.localData).filter(
     (x) => x[0] !== "board"
@@ -65,73 +74,6 @@ function up() {
 }
 function down() {
   game.updatePosition(0, +1);
-}
-
-// https://web.dev/articles/gamepad and https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API
-let gamepads = {}; // gamepads[0].id; gamepads[0].axes ; gamepads[0].buttons[0].pressed / .touched / .value for analog
-
-const usingGamepad = true;
-
-const buttonListeners = [up, right, down, left];
-
-const isGamePadApiSupported = "getGamepads" in navigator;
-if (isGamePadApiSupported) {
-  window.addEventListener("gamepadconnected", (event) => {
-    console.log("gamepad connected:", event.gamepad);
-  });
-  window.addEventListener("gamepaddisconnected", (event) => {
-    console.log("gamepad disconnected:", event.gamepad);
-  });
-
-  pollGamepads((gamepads) => {
-    if (gamepads) {
-      showGamepadButtons(gamepads);
-      mapGamepadToActions(gamepads[0], { buttonListeners: buttonListeners });
-    }
-  });
-
-  function pollGamepads(processGamePads) {
-    gamepads = navigator.getGamepads();
-    processGamePads(gamepads);
-    // for (const gamepad of gamepads) {
-    //   if (!gamepad) {
-    //     continue;
-    //   }
-    //   // can process a single gamepad here:
-    //   // console.log(gamepad.axes, gamepad.buttons); // button.pressed/.touched/.value
-    // }
-    window.requestAnimationFrame(pollGamepads.bind(this, processGamePads));
-  }
-}
-
-/** use listener indices to map them to controls:
- * axisListeners[0]: (number) => {}
- * buttonListeners[0]: () => {} // TODO: optional param value?:number for analog button
- */
-function mapGamepadToActions(
-  gamepad,
-  { axisListeners = [], buttonListeners = [] }
-) {
-  if (!gamepad || !usingGamepad) return;
-
-  const gamepadAxes = gamepad.axes;
-  if (gamepadAxes && gamepadAxes.length) {
-    for (let i = 0; i < gamepadAxes.length; i++) {
-      const gamepadAxis = gamepadAxes[i];
-      const axisListener = axisListeners[i];
-      axisListener?.(gamepadAxis);
-    }
-  }
-  const gamepadButtons = gamepad.buttons;
-  if (gamepadButtons && gamepadButtons.length) {
-    for (let i = 0; i < gamepadButtons.length; i++) {
-      const gamepadButton = gamepadButtons[i];
-      if (gamepadButton.pressed || gamepadButton.touched) {
-        const buttonListener = buttonListeners[i];
-        buttonListener?.(gamepadButton);
-      }
-    }
-  }
 }
 
 function showGamepadButtons(gamepads) {
