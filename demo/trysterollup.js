@@ -13,6 +13,8 @@ export class GameController {
     generatingDocumentation = false,
   }) {
     this.room = null;
+    this.sendData = () => {};
+    this.getData = () => {};
     this.updateUi = updateUi || function () {};
     this.localData = { [selfId]: { playerId: 0 } };
     this.debug = true;
@@ -23,23 +25,21 @@ export class GameController {
 
     if (!generatingDocumentation) {
       // tell other peers currently in the room
-      this.#sendData(this.localData);
+      this.sendData(this.localData);
 
-      this.#initializeDataEventListeners();
       this.#initializeGamepadSupport();
     }
   }
-
   // (put private properties AFTER the constructor so documentation generates properly)
-  #sendData = () => {};
-  #getData = () => {};
 
-  joinRoom(/* https://github.com/dmotz/trystero#api */) {
+  join(/* https://github.com/dmotz/trystero#api */) {
+    console.log("calling join in controller");
     this.room = joinRoom(...arguments);
-
     const [sendData, getData] = this.room.makeAction("data");
-    this.#sendData = sendData;
-    this.#getData = getData;
+    this.sendData = sendData;
+    this.getData = getData;
+
+    this.#initializeRoomEventListeners();
 
     return this.room;
   }
@@ -52,7 +52,7 @@ export class GameController {
   update(dataOverride = null) {
     if (dataOverride) this.localData = dataOverride;
     this.updateUi();
-    this.#sendData(this.localData);
+    this.sendData(this.localData);
     return this;
   }
 
@@ -69,14 +69,17 @@ export class GameController {
     return this;
   }
 
-  #initializeDataEventListeners() {
+  #initializeRoomEventListeners() {
+    console.log(1);
     this.#signalNewcomers();
     this.#listenForPeersSendingData();
     this.#listenForPeersLeaving();
   }
 
   #signalNewcomers() {
+    console.log(2);
     this.room?.onPeerJoin((peerId) => {
+      console.log(3);
       this.#syncPlayerIdOfIncomingPeer(peerId);
 
       if (this.debug) console.log("onPeerJoin", peerId);
@@ -86,12 +89,14 @@ export class GameController {
   }
 
   #listenForPeersSendingData() {
-    this.#getData((data, peerId) => {
+    console.log(4);
+    this.getData((data, peerId) => {
+      console.log(5);
       if (this.debugMore) {
         console.log(
           `-----|\n\this.localData BEFORE:\n${JSON.stringify(this.localData)}`
         );
-        console.log("#getData data peerId", JSON.stringify(data), peerId);
+        console.log("getData data peerId", JSON.stringify(data), peerId);
       }
 
       Object.entries(data).forEach((x) => {
@@ -135,7 +140,7 @@ export class GameController {
     let needToSendData =
       mustGiveThemANewPlayerId || dataBefore !== JSON.stringify(this.localData);
 
-    if (needToSendData) this.#sendData(this.localData);
+    if (needToSendData) this.sendData(this.localData);
   }
 
   #listenForPeersLeaving() {

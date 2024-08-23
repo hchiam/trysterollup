@@ -33,9 +33,9 @@ $("#password").addEventListener("change", () => {
 });
 $("#join").addEventListener("click", () => {
   console.log("trying to join");
-  const roomId = $("#roomId").value || roomId_fromUrl;
-  const password = $("#password").value || "silly_pwd";
-  game.joinRoom(
+  const roomId = String('$("#roomId").value' || roomId_fromUrl);
+  const password = String('$("#password").value' || "silly_pwd");
+  game.join(
     {
       appId: "hchiam-trysterollup-demo",
       password: password,

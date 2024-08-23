@@ -14,7 +14,15 @@ constructor({
 ```
 
 ```js
-joinRoom(/* https://github.com/dmotz/trystero#api */)
+join(/* https://github.com/dmotz/trystero#api joinRoom */)
+```
+
+```js
+sendData()
+```
+
+```js
+getData()
 ```
 
 ```js
