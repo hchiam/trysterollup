@@ -14,6 +14,10 @@ constructor({
 ```
 
 ```js
+joinRoom(/* https://github.com/dmotz/trystero#api */)
+```
+
+```js
 startGame()
 ```
 
@@ -26,6 +30,8 @@ updatePosition(xDelta = 0, yDelta = 0, peerId = selfId)
 ```
 
 ## Properties:
+
+`room`: object
 
 `updateUi`: function
 

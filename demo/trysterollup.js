@@ -5,31 +5,6 @@
 
 import { selfId, joinRoom } from "./trystero-nostr.min.js";
 
-// .../?room=someNumberOrId
-export const roomId =
-  "room" + (new URLSearchParams(window.location.search).get("room") || 42);
-
-const room = joinRoom(
-  { appId: "hchiam-trysterollup-demo", password: "silly_pwd" },
-  roomId,
-  function onError() {}
-);
-
-room.onPeerJoin((userId) => {
-  console.log("userId", userId);
-});
-room.onPeerLeave((userId) => {
-  console.log("userId", userId);
-});
-
-const [sendDataOut, getData] = room.makeAction("data");
-
-export function sendData(data) {
-  // use this to debug whether data is bouncing back and forth unnecessarily
-  // console.log("data", data);
-  sendDataOut(data);
-}
-
 export class GameController {
   constructor({
     updateUi, // callback function
@@ -37,6 +12,7 @@ export class GameController {
     joystickListeners = [], // array of functions that take in a number
     generatingDocumentation = false,
   }) {
+    this.room = null;
     this.updateUi = updateUi || function () {};
     this.localData = { [selfId]: { playerId: 0 } };
     this.debug = true;
@@ -47,11 +23,25 @@ export class GameController {
 
     if (!generatingDocumentation) {
       // tell other peers currently in the room
-      sendData(this.localData);
+      this.#sendData(this.localData);
 
       this.#initializeDataEventListeners();
       this.#initializeGamepadSupport();
     }
+  }
+
+  // (put private properties AFTER the constructor so documentation generates properly)
+  #sendData = () => {};
+  #getData = () => {};
+
+  joinRoom(/* https://github.com/dmotz/trystero#api */) {
+    this.room = joinRoom(...arguments);
+
+    const [sendData, getData] = this.room.makeAction("data");
+    this.#sendData = sendData;
+    this.#getData = getData;
+
+    return this.room;
   }
 
   startGame() {
@@ -62,7 +52,7 @@ export class GameController {
   update(dataOverride = null) {
     if (dataOverride) this.localData = dataOverride;
     this.updateUi();
-    sendData(this.localData);
+    this.#sendData(this.localData);
     return this;
   }
 
@@ -86,7 +76,7 @@ export class GameController {
   }
 
   #signalNewcomers() {
-    room.onPeerJoin((peerId) => {
+    this.room?.onPeerJoin((peerId) => {
       this.#syncPlayerIdOfIncomingPeer(peerId);
 
       if (this.debug) console.log("onPeerJoin", peerId);
@@ -96,12 +86,12 @@ export class GameController {
   }
 
   #listenForPeersSendingData() {
-    getData((data, peerId) => {
+    this.#getData((data, peerId) => {
       if (this.debugMore) {
         console.log(
           `-----|\n\this.localData BEFORE:\n${JSON.stringify(this.localData)}`
         );
-        console.log("getData data peerId", JSON.stringify(data), peerId);
+        console.log("#getData data peerId", JSON.stringify(data), peerId);
       }
 
       Object.entries(data).forEach((x) => {
@@ -145,11 +135,11 @@ export class GameController {
     let needToSendData =
       mustGiveThemANewPlayerId || dataBefore !== JSON.stringify(this.localData);
 
-    if (needToSendData) sendData(this.localData);
+    if (needToSendData) this.#sendData(this.localData);
   }
 
   #listenForPeersLeaving() {
-    room.onPeerLeave((peerId) => {
+    this.room?.onPeerLeave((peerId) => {
       delete this.localData[peerId];
       if (this.debug) console.log("onPeerLeave", peerId);
       this.updateUi();
