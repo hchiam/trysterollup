@@ -55,7 +55,7 @@ export class GameController {
     return this;
   }
 
-  update(dataOverride) {
+  update(dataOverride = null) {
     if (dataOverride) this.localData = dataOverride;
     this.updateUi();
     sendData(this.localData);
