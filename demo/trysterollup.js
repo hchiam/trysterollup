@@ -164,6 +164,7 @@ export class GameController {
       }
     });
     this.localData.players[peerIdOfMaxPlayerId].isHost = true;
+    this.update();
   }
 
   #initializeGamepadSupport() {
