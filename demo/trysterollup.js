@@ -14,7 +14,7 @@ export class GameController {
   }) {
     this.room = null;
     this.updateUi = updateUi || function () {};
-    this.localData = { [selfId]: { playerId: 0 } };
+    this.localData = { players: { [selfId]: { playerId: 0 } } };
     this.debug = true;
     this.debugMore = false;
     this.gamepads = {};
@@ -57,11 +57,11 @@ export class GameController {
   }
 
   updatePosition(xDelta = 0, yDelta = 0, peerId = selfId) {
-    const { x, y } = this.localData[peerId];
+    const { x, y } = this.localData.players[peerId];
 
-    this.localData[peerId].x =
+    this.localData.players[peerId].x =
       x === undefined ? xDelta : Number(x) + Number(xDelta);
-    this.localData[peerId].y =
+    this.localData.players[peerId].y =
       y === undefined ? yDelta : Number(y) + Number(yDelta);
 
     this.update();
@@ -111,36 +111,38 @@ export class GameController {
   }
 
   #syncPlayerIdOfIncomingPeer(peerId) {
-    const dataBefore = JSON.stringify(this.localData);
+    const localDataBefore = JSON.stringify(this.localData);
 
-    if (!(peerId in this.localData)) this.localData[peerId] = { playerId: 0 };
+    if (!(peerId in this.localData.players))
+      this.localData.players[peerId] = { playerId: 0 };
 
     const mustGiveThemANewPlayerId =
-      !isNaN(this.localData[peerId].playerId) &&
-      this.localData[peerId].playerId === 0;
+      !isNaN(this.localData.players[peerId].playerId) &&
+      this.localData.players[peerId].playerId === 0;
 
     if (mustGiveThemANewPlayerId) {
       const maxPlayerId = Math.max(
-        ...Object.values(this.localData).map((x) =>
+        ...Object.values(this.localData.players).map((x) =>
           isNaN(x.playerId) ? 0 : Number(x.playerId)
         )
       );
 
-      this.localData[peerId].playerId = Math.max(
+      this.localData.players[peerId].playerId = Math.max(
         maxPlayerId + 1,
-        Object.keys(this.localData).length
+        Object.keys(this.localData.players).length
       );
     }
 
     let needToSendData =
-      mustGiveThemANewPlayerId || dataBefore !== JSON.stringify(this.localData);
+      mustGiveThemANewPlayerId ||
+      localDataBefore !== JSON.stringify(this.localData);
 
     if (needToSendData) this.#sendData(this.localData);
   }
 
   #listenForPeersLeaving() {
     this.room?.onPeerLeave((peerId) => {
-      delete this.localData[peerId];
+      delete this.localData.players[peerId];
       if (this.debug) console.log("onPeerLeave", peerId);
       this.updateUi();
     });
