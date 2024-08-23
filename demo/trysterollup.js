@@ -196,7 +196,7 @@ export class GameController {
   }
 
   #pollGamepads(processGamePads = () => {}) {
-    this.gamepads = navigator.getGamepads();
+    this.gamepads = navigator.getGamepads().filter(Boolean);
     processGamePads(this.gamepads);
     window.requestAnimationFrame(
       this.#pollGamepads.bind(this, processGamePads)
