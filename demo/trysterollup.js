@@ -127,10 +127,7 @@ export class GameController {
         )
       );
 
-      this.localData.players[peerId].playerId = Math.max(
-        maxPlayerId + 1,
-        Object.keys(this.localData.players).length
-      );
+      this.localData.players[peerId].playerId = maxPlayerId + 1;
     }
 
     let needToSendData =
