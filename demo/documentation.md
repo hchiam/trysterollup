@@ -4,13 +4,26 @@
 
 ## Methods:
 
-`constructor({ updateUi, generatingDocumentation = false })`
+```js
+constructor({
+    updateUi,
+    buttonListeners = [], // array of functions
+    joystickListeners = [], // array of functions that take in a number
+    generatingDocumentation = false,
+  })
+```
 
-`startGame()`
+```js
+startGame()
+```
 
-`update(dataOverride = null)`
+```js
+update(dataOverride = null)
+```
 
-`updatePosition(xDelta = 0, yDelta = 0, peerId = selfId)`
+```js
+updatePosition(xDelta = 0, yDelta = 0, peerId = selfId)
+```
 
 ## Properties:
 
@@ -21,3 +34,9 @@
 `debug`: boolean
 
 `debugMore`: boolean
+
+`gamepads`: object
+
+`buttonListeners`: object
+
+`joystickListeners`: object
