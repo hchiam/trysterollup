@@ -88,15 +88,13 @@ function updateUi() {
 }
 
 function printPlayers() {
-  const playersData = Object.entries(game.localData).filter(
-    (x) => x[0] !== "board"
-  );
+  const playersData = Object.entries(game.localData.players);
   const players = playersData
     .map((x) => `${x[0]}: ${JSON.stringify(x[1])}`)
     .join("\n");
   const boardData = game.localData.board ?? [[]];
   const board = boardData.map((row) => row.join(" ")).join("\n");
-  log(board + "\nplayers:\n" + players);
+  log(board + "\n\nplayers:\n" + players);
 }
 
 function left() {
