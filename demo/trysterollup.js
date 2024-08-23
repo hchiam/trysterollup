@@ -26,7 +26,7 @@ const [sendDataOut, getData] = room.makeAction("data");
 
 export function sendData(data) {
   // use this to debug whether data is bouncing back and forth unnecessarily
-  console.log("data", data);
+  // console.log("data", data);
   sendDataOut(data);
 }
 
