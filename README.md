@@ -4,7 +4,7 @@
 
 <img src="trysterollup.png" height="100">
 
-Trysterollup is a WIP p2p game controller wrapper around Trystero.
+Trysterollup is a WIP p2p game controller wrapper around Trystero to simplify setting up multiplayer game demos.
 
 This project came from experimenting with [trystero](https://github.com/dmotz/trystero) to make games while [learning WebRTC](https://github.com/hchiam/learning-webrtc).
 
