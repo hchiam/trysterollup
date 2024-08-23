@@ -32,7 +32,7 @@ export function sendData(data) {
 
 export class GameController {
   constructor({
-    updateUi,
+    updateUi, // callback function
     buttonListeners = [], // array of functions
     joystickListeners = [], // array of functions that take in a number
     generatingDocumentation = false,

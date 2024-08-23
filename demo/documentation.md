@@ -6,7 +6,7 @@
 
 ```js
 constructor({
-    updateUi,
+    updateUi, // callback function
     buttonListeners = [], // array of functions
     joystickListeners = [], // array of functions that take in a number
     generatingDocumentation = false,
