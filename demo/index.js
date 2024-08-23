@@ -6,6 +6,7 @@ const game = new GameController({
   buttonListeners: [up, right, down, left],
 });
 game.localData.board = get2dArray(10, 10, "x");
+// also possible: game.buttonListeners = [up, right, down, left];
 game.startGame();
 updateUi();
 
