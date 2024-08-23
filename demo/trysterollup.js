@@ -48,11 +48,15 @@ export class GameController {
   }
 
   startGame() {
-    this.update();
+    this.update({ sync: false });
     return this;
   }
 
-  update(dataOverride = null) {
+  update(params = { sync: null /*explicit true/false*/, dataOverride: null }) {
+    const { sync, dataOverride } = params;
+    if (sync !== true && sync !== false) {
+      throw new Error("sync parameter must be explicitly set to true or false");
+    }
     if (dataOverride) this.localData = dataOverride;
     this.updateUi();
     sendData(this.localData);
@@ -67,7 +71,7 @@ export class GameController {
     this.localData[peerId].y =
       y === undefined ? yDelta : Number(y) + Number(yDelta);
 
-    this.update();
+    this.update({ sync: true });
 
     return this;
   }

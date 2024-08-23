@@ -13,7 +13,7 @@ $("#update").addEventListener("click", () => {
 
 $("#play").addEventListener("click", () => {
   game.localData.board[0][0] = "o";
-  game.update();
+  game.update({ sync: true });
 });
 
 // button clicks work on both desktop and mobile and keyboard

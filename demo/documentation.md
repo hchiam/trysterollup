@@ -8,7 +8,7 @@
 
 `startGame()`
 
-`update(dataOverride = null)`
+`update(params = { sync: null /*explicit true/false*/, dataOverride: null })`
 
 `updatePosition(xDelta = 0, yDelta = 0, peerId = selfId)`
 
