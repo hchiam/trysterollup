@@ -1,17 +1,52 @@
-import { GameController, sendData } from "./trysterollup";
+import { GameController } from "./trysterollup";
 const $ = (s) => document.querySelector(s);
+
+// .../?room=someNumberOrId
+const roomId_fromUrl =
+  new URLSearchParams(window.location.search).get("room") || "room42";
 
 const game = new GameController({
   updateUi: updateUi,
   buttonListeners: [up, right, down, left],
 });
+// this is possible: game.buttonListeners = [up, right, down, left];
 game.localData.board = get2dArray(10, 10, "x");
-// also possible: game.buttonListeners = [up, right, down, left];
 game.startGame();
 updateUi();
 
+$("#roomId").value = roomId_fromUrl;
+$("#roomId").addEventListener("change", () => {
+  const valid = $("#roomId").value && $("#password").value;
+  if (valid) {
+    $("#join").style.pointerEvents = "";
+  } else {
+    $("#join").style.pointerEvents = "none";
+  }
+});
+$("#password").addEventListener("change", () => {
+  const valid = $("#roomId").value && $("#password").value;
+  if (valid) {
+    $("#join").style.pointerEvents = "";
+  } else {
+    $("#join").style.pointerEvents = "none";
+  }
+});
+$("#join").addEventListener("click", () => {
+  console.log("trying to join");
+  const roomId = $("#roomId").value || roomId_fromUrl;
+  const password = $("#password").value || "silly_pwd";
+  game.join(
+    {
+      appId: "hchiam-trysterollup-demo",
+      password: password,
+    },
+    roomId,
+    function onJoinError() {}
+  );
+});
+
 $("#update").addEventListener("click", () => {
-  sendData(game.localData);
+  game.update(game.localData);
   // console.log("#update click", JSON.stringify(game.localData));
   printPlayers();
 });

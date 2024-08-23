@@ -20,10 +20,23 @@
       fieldset {
         margin-block: 0.5rem;
       }
+      #roodId:placeholder-shown ~ #join,
+      #password:placeholder-shown ~ #join {
+        /* pointer-events: none; */
+        cursor: not-allowed;
+      }
     </style>
   </head>
   <body>
     <h1>trysterollup-demo</h1>
+    <fieldset>
+      <p>
+        Join room:
+        <input id="roomId" type="text" placeholder="Room ID" />
+        <input id="password" type="text" placeholder="Password" />
+        <button id="join">JOIN</button>
+      </p>
+    </fieldset>
     <button id="update">update</button>
     <button id="play">play</button>
     <div>
