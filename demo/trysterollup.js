@@ -131,6 +131,8 @@ export class GameController {
         maxPlayerId + 1,
         Object.keys(this.localData.players).length - 1
       );
+
+      this.#updateHost();
     }
 
     let needToSendData =
@@ -144,8 +146,24 @@ export class GameController {
     this.room?.onPeerLeave((peerId) => {
       delete this.localData.players[peerId];
       if (this.debug) console.log("onPeerLeave", peerId);
+      this.#updateHost();
       this.updateUi();
     });
+  }
+
+  #updateHost() {
+    let maxPlayerId = 0;
+    let peerIdOfMaxPlayerId = null;
+    Object.entries(this.localData.players).forEach((player) => {
+      const playerData = player[1];
+      playerData.isHost = false;
+      const likelyFasterConnection = playerData.playerId > maxPlayerId;
+      if (likelyFasterConnection) {
+        maxPlayerId = playerData.playerId;
+        peerIdOfMaxPlayerId = player[0];
+      }
+    });
+    this.localData.players[peerIdOfMaxPlayerId].isHost = true;
   }
 
   #initializeGamepadSupport() {
