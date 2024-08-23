@@ -13,9 +13,9 @@ export const roomId =
   "room" + (new URLSearchParams(window.location.search).get("room") || 42);
 
 const room = joinRoom(
-  { appId: "hchiam-trysterollup-demo" },
+  { appId: "hchiam-trysterollup-demo", password: "silly_pwd" },
   roomId,
-  "silly_pwd"
+  function onError() {}
 );
 
 room.onPeerJoin((userId) => {
