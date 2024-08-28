@@ -13,10 +13,9 @@
         "url": "git://github.com/hchiam/trysterollup.git"
     },
     "scripts": {
-        "pkg": "yarn package",
-        "package": "bash package.sh; git status -sb; echo; echo Make sure to update the version in package.json;",
-        "pub": "yarn publish",
-        "publish": "npm publish --access public"
+        "pkg": "bash package.sh; git status -sb; echo; echo Make sure to update the version in package.json;",
+        "pub": "npm publish --access public",
+        "reminder": "echo 'npm config set registry https://registry.npmjs.org/ then set the _authToken=%YOUR_ACCES_TOKEN% in cd /Users/<NAME>/.npmrc'"
     },
     "dependencies": {
         "trystero": "0.20.0"
