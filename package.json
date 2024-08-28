@@ -15,6 +15,7 @@
     "scripts": {
         "pkg": "yarn package",
         "package": "bash package.sh; git status -sb; echo; echo Make sure to update the version in package.json;",
+        "pub": "yarn publish",
         "publish": "npm publish --access public"
     },
     "dependencies": {
