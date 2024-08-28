@@ -1,4 +1,4 @@
-import { GameController } from "./trysterollup";
+import { GameController } from "../trysterollup.js";
 const $ = (s) => document.querySelector(s);
 
 class DocumentationGenerator {

@@ -3,7 +3,7 @@
  * https://oxism.com/trystero
  */
 
-import { selfId, joinRoom } from "./trystero-nostr.min.js";
+import { selfId, joinRoom } from "trystero/nostr";
 
 export class GameController {
   constructor({

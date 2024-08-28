@@ -1,4 +1,4 @@
-import { GameController } from "./trysterollup";
+import { GameController } from "../trysterollup.js";
 const $ = (s) => document.querySelector(s);
 
 // .../?room=someNumberOrId
@@ -130,3 +130,5 @@ function showGamepadButtons(gamepads) {
       .join("");
   }
 }
+
+console.log("https://github.com/hchiam/trysterollup");
