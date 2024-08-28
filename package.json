@@ -1,6 +1,6 @@
 {
     "name": "trysterollup",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "main": "trysterollup.js",
     "unpkg": "trysterollup.min.js",
     "author": "hchiam",
