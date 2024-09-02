@@ -55,4 +55,4 @@ isManuallyRemappingButtons()
 
 `joystickListeners`: object
 
-`actionsToRemap`: object
+`listenersToRemap`: object

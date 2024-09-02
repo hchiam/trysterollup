@@ -128,7 +128,7 @@ function log(text) {
 function updateUi() {
   printPlayers();
 
-  const actionsToRemap = Object.values(game.actionsToRemap)
+  const actionsToRemap = Object.values(game.listenersToRemap)
     .map((f) => f.name)
     .join(", ");
   $("#remapMessage").innerText = actionsToRemap

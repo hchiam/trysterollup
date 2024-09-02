@@ -24,10 +24,10 @@ export class GameController {
     this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
-    this.actionsToRemap = {};
+    this.listenersToRemap = {};
     if (manuallyMapGamepadToActions) {
       for (let actionIndex of Object.keys(buttonListeners)) {
-        this.actionsToRemap[-actionIndex - 1] = buttonListeners[actionIndex];
+        this.listenersToRemap[-actionIndex - 1] = buttonListeners[actionIndex];
       }
     }
 
@@ -84,7 +84,7 @@ export class GameController {
   }
 
   isManuallyRemappingButtons() {
-    const negativeKeysToRemap = Object.keys(this.actionsToRemap).filter(
+    const negativeKeysToRemap = Object.keys(this.listenersToRemap).filter(
       (key) => key < 0
     );
     return negativeKeysToRemap.length > 0;
@@ -266,11 +266,11 @@ export class GameController {
           if (manuallyMap) {
             if (this.isManuallyRemappingButtons()) {
               const negativeKeysToRemap = Object.keys(
-                this.actionsToRemap
+                this.listenersToRemap
               ).filter((key) => key < 0);
 
               const actionKeyToRemap = negativeKeysToRemap[0];
-              const actionToRemap = this.actionsToRemap[actionKeyToRemap];
+              const actionToRemap = this.listenersToRemap[actionKeyToRemap];
 
               if (this.#currentButton !== currentlyPressedButton) {
                 this.#currentButton = currentlyPressedButton;
@@ -283,10 +283,10 @@ export class GameController {
                   // debounce to avoid triggering action right after remap:
                   clearTimeout(this.#manuallyRemapLastButtonTimeout);
                   this.#manuallyRemapLastButtonTimeout = setTimeout(() => {
-                    delete this.actionsToRemap[actionKeyToRemap];
+                    delete this.listenersToRemap[actionKeyToRemap];
                   }, 200);
                 } else {
-                  delete this.actionsToRemap[actionKeyToRemap];
+                  delete this.listenersToRemap[actionKeyToRemap];
                 }
               }
             }
