@@ -7,7 +7,48 @@ const roomId_fromUrl =
 
 const game = new GameController({
   updateUi: updateUi,
-  buttonListeners: [up, right, down, left],
+  keydownListeners: {
+    left: left,
+    right: right,
+    up: up,
+    down: down,
+  },
+  // buttonListeners: {
+  //   // USB Joystick: Y X A B; up down left right;
+  //   0: up,
+  //   1: right,
+  //   2: down,
+  //   3: left,
+  //   12: up,
+  //   13: down,
+  //   14: left,
+  //   15: right,
+  // },
+  // joystickListeners: {
+  //   // USB Joystick:
+  //   0: leftAxisHorizontal,
+  //   1: leftAxisVertical,
+  //   // 3: rightAxisHorizontal, // not working well on my USB Joystick
+  //   // 4: rightAxisVertical, // not working well on my USB Joystick
+  // },
+  buttonListeners: {
+    // Joy-Con: B A Y X; up down left right;
+    0: down,
+    1: right,
+    2: left,
+    3: up,
+    12: up,
+    13: down,
+    14: left,
+    15: right,
+  },
+  joystickListeners: {
+    // Joy-Con:
+    0: leftAxisHorizontal,
+    1: leftAxisVertical,
+    2: rightAxisHorizontal,
+    3: rightAxisVertical,
+  },
 });
 // this is possible: game.buttonListeners = [up, right, down, left];
 game.localData.board = get2dArray(10, 10, "x");
@@ -110,6 +151,20 @@ function down() {
   game.updatePosition(0, +1);
 }
 
+function leftAxisHorizontal(data) {
+  // TODO: demo using axis value
+  game.updateUi();
+}
+function leftAxisVertical(data) {
+  game.updateUi();
+}
+function rightAxisHorizontal(data) {
+  game.updateUi();
+}
+function rightAxisVertical(data) {
+  game.updateUi();
+}
+
 function showGamepadButtons(gamepads) {
   if (!gamepads) {
     $("#gamepads").innerHTML = "";
@@ -118,10 +173,10 @@ function showGamepadButtons(gamepads) {
       .map(
         (gamepad) => `<fieldset>
           <p>${gamepad.id}:</p>
-          <p>Axes:<br><span>${gamepad.axes
-            .map((a) => String(Math.round(a * 100)))
-            .map((a, i) => (i % 2 === 0 ? a + " " : a + ","))
-            .join("")}</span></p>
+          <pre>Axes:<br><span>${gamepad.axes
+            .map((a) => String(Math.round(a * 100)).padStart(4, " ") + "%")
+            .map((a, i) => (i % 2 === 0 ? a + " " : a + "<br/><br/>"))
+            .join("")}</span></pre>
           <p>Buttons:<br><span>${gamepad.buttons
             .map((b, i) => (i === 4 ? " " : "" + Number(b.pressed)))
             .join("")}</span></p>

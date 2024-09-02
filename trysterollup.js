@@ -8,8 +8,9 @@ import { selfId, joinRoom } from "trystero/nostr";
 export class GameController {
   constructor({
     updateUi, // callback function
-    buttonListeners = [], // array of functions
-    joystickListeners = [], // array of functions that take in a number
+    keydownListeners = {}, // key:left/right/up/down for keyboard
+    buttonListeners = {}, // object(key:number) of functions for game pad buttons
+    joystickListeners = {}, // object(key:number) of functions that take in a number
     generatingDocumentation = false,
   }) {
     this.room = null;
@@ -18,12 +19,15 @@ export class GameController {
     this.debug = true;
     this.debugMore = false;
     this.gamepads = {};
+    this.keydownListeners = keydownListeners; // keydownListeners.left: (event) => {}
     this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
     if (!generatingDocumentation) {
       // tell other peers currently in the room
       this.#sendData(this.localData);
+
+      this.#initializeKeyboardSupport();
 
       this.#initializeGamepadSupport();
     }
@@ -165,6 +169,29 @@ export class GameController {
     });
     this.localData.players[peerIdOfMaxPlayerId].isHost = true;
     this.update();
+  }
+
+  #initializeKeyboardSupport() {
+    document.querySelector("body").addEventListener("keydown", (event) => {
+      switch (event.key.toLowerCase()) {
+        case "arrowleft":
+        case "a":
+          this.keydownListeners?.left?.(event);
+          break;
+        case "arrowright":
+        case "d":
+          this.keydownListeners?.right?.(event);
+          break;
+        case "arrowup":
+        case "w":
+          this.keydownListeners?.up?.(event);
+          break;
+        case "arrowdown":
+        case "s":
+          this.keydownListeners?.down?.(event);
+          break;
+      }
+    });
   }
 
   #initializeGamepadSupport() {
