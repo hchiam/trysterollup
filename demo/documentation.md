@@ -12,6 +12,7 @@ constructor({
     joystickListeners = {}, // object key:number of functions that take in a number
     generatingDocumentation = false,
     manuallyMapGamepadToActions = false,
+    hold3ButtonsFor3SecondsToRemapButtons = false,
   })
 ```
 
@@ -32,6 +33,10 @@ updatePosition(xDelta = 0, yDelta = 0, peerId = selfId)
 ```
 
 ```js
+isHolding3ButtonsDown()
+```
+
+```js
 isManuallyRemappingButtons()
 ```
 
@@ -40,7 +45,7 @@ manuallyRemapButtons()
 ```
 
 ```js
-getCurrentlyOnButtons()
+getCurrentlyOnButtonsPerGamepad()
 ```
 
 ## Properties
