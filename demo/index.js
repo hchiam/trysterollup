@@ -174,16 +174,16 @@ function down() {
 }
 
 function leftAxisHorizontal(data) {
-  game.updatePosition(data, 0);
+  game.updatePosition(Math.round(data), 0);
 }
 function leftAxisVertical(data) {
-  game.updatePosition(0, data);
+  game.updatePosition(0, Math.round(data));
 }
 function rightAxisHorizontal(data) {
-  game.updatePosition(data, 0);
+  game.updatePosition(Math.round(data), 0);
 }
 function rightAxisVertical(data) {
-  game.updatePosition(0, data);
+  game.updatePosition(0, Math.round(data));
 }
 
 function showGamepadButtons(gamepads) {
