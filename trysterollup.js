@@ -9,8 +9,8 @@ export class GameController {
   constructor({
     updateUi, // callback function
     keydownListeners = {}, // key:left/right/up/down for keyboard
-    buttonListeners = {}, // object(key:number) of functions for game pad buttons
-    joystickListeners = {}, // object(key:number) of functions that take in a number
+    buttonListeners = {}, // object key:number of functions for game pad buttons
+    joystickListeners = {}, // object key:number of functions that take in a number
     generatingDocumentation = false,
   }) {
     this.room = null;
