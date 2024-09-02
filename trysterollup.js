@@ -24,6 +24,12 @@ export class GameController {
     this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
+    this.#originalButtonListeners = {};
+    for (let actionIndex of Object.keys(this.buttonListeners)) {
+      this.#originalButtonListeners[actionIndex] =
+        this.buttonListeners[actionIndex];
+    }
+
     this.#manuallyMapGamepadToActions = manuallyMapGamepadToActions;
     this.listenersToRemap = {};
     if (manuallyMapGamepadToActions) {
@@ -42,7 +48,8 @@ export class GameController {
   // (put private properties AFTER the constructor so documentation generates properly)
   #sendData = () => {}; // for room
   #getData = () => {}; // for room
-  #currentButton = null;
+  #originalButtonListeners = {};
+  #currentButton = null; // assumes one at a time, for manual remap functionality only
   #manuallyMapGamepadToActions = false;
   #manuallyRemapLastButtonTimeout = null;
 
@@ -93,8 +100,19 @@ export class GameController {
     this.listenersToRemap = {};
     for (let actionIndex of Object.keys(this.buttonListeners)) {
       this.listenersToRemap["toRemap:" + actionIndex] =
-        this.buttonListeners[actionIndex];
+        this.#originalButtonListeners[actionIndex];
     }
+  }
+
+  getCurrentlyOnButtons() {
+    return this.gamepads.map((gp) =>
+      gp.buttons
+        .map((b, i) => {
+          return { i, on: b.pressed || b.touched };
+        })
+        .filter((b) => b.on)
+        .map((b) => b.i)
+    );
   }
 
   #initializeRoomEventListeners() {

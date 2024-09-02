@@ -156,40 +156,58 @@ function b() {
   if (!game.isManuallyRemappingButtons()) {
     down();
   }
+  anyButtonEventCallback();
 }
 function a() {
   if (!game.isManuallyRemappingButtons()) {
     right();
   }
+  anyButtonEventCallback();
 }
 function y() {
   if (!game.isManuallyRemappingButtons()) {
     left();
   }
+  anyButtonEventCallback();
 }
 function x() {
   if (!game.isManuallyRemappingButtons()) {
     up();
   }
+  anyButtonEventCallback();
 }
 function left() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(-1, 0);
   }
+  anyButtonEventCallback();
 }
 function right() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(+1, 0);
   }
+  anyButtonEventCallback();
 }
 function up() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(0, -1);
   }
+  anyButtonEventCallback();
 }
 function down() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(0, +1);
+  }
+  anyButtonEventCallback();
+}
+let remapButtonsTimer = null;
+function anyButtonEventCallback() {
+  const gamepadsOnButtons = game.getCurrentlyOnButtons();
+  if (gamepadsOnButtons.some((buttonsOn) => buttonsOn.length === 3)) {
+    clearTimeout(remapButtonsTimer);
+    remapButtonsTimer = setTimeout(() => {
+      game.manuallyRemapButtons();
+    }, 1000);
   }
 }
 

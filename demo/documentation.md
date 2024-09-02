@@ -39,6 +39,10 @@ isManuallyRemappingButtons()
 manuallyRemapButtons()
 ```
 
+```js
+getCurrentlyOnButtons()
+```
+
 ## Properties
 
 `room`: object
