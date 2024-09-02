@@ -200,14 +200,24 @@ function down() {
   }
   anyButtonEventCallback();
 }
-let remapButtonsTimer = null;
+let remapButtonsHoldTimer = null;
+let remapButtonsDelayTimer = null;
 function anyButtonEventCallback() {
   const gamepadsOnButtons = game.getCurrentlyOnButtons();
   if (gamepadsOnButtons.some((buttonsOn) => buttonsOn.length === 3)) {
-    clearTimeout(remapButtonsTimer);
-    remapButtonsTimer = setTimeout(() => {
-      game.manuallyRemapButtons();
-    }, 1000);
+    if (remapButtonsHoldTimer === null) {
+      remapButtonsHoldTimer = setTimeout(() => {
+        clearTimeout(remapButtonsDelayTimer);
+        remapButtonsDelayTimer = setTimeout(() => {
+          game.manuallyRemapButtons();
+          clearTimeout(remapButtonsDelayTimer);
+          clearTimeout(remapButtonsHoldTimer);
+          remapButtonsHoldTimer = null;
+        }, 1000);
+      }, 3000);
+    }
+  } else {
+    clearTimeout(remapButtonsHoldTimer);
   }
 }
 
