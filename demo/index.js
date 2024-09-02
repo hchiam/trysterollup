@@ -157,66 +157,40 @@ function b() {
   if (!game.isManuallyRemappingButtons()) {
     down();
   }
-  anyButtonEventCallback();
 }
 function a() {
   if (!game.isManuallyRemappingButtons()) {
     right();
   }
-  anyButtonEventCallback();
 }
 function y() {
   if (!game.isManuallyRemappingButtons()) {
     left();
   }
-  anyButtonEventCallback();
 }
 function x() {
   if (!game.isManuallyRemappingButtons()) {
     up();
   }
-  anyButtonEventCallback();
 }
 function left() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(-1, 0);
   }
-  anyButtonEventCallback();
 }
 function right() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(+1, 0);
   }
-  anyButtonEventCallback();
 }
 function up() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(0, -1);
   }
-  anyButtonEventCallback();
 }
 function down() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(0, +1);
-  }
-  anyButtonEventCallback();
-}
-let remapButtonsHoldTimer = null;
-let remapButtonsDelayTimer = null;
-function anyButtonEventCallback() {
-  const gamepadsOnButtons = game.getCurrentlyOnButtonsPerGamepad();
-  if (gamepadsOnButtons.some((gpButtonsOn) => gpButtonsOn.length === 3)) {
-    if (remapButtonsHoldTimer === null) {
-      remapButtonsHoldTimer = setTimeout(() => {
-        clearTimeout(remapButtonsDelayTimer);
-        remapButtonsDelayTimer = setTimeout(() => {
-          game.manuallyRemapButtons();
-          clearTimeout(remapButtonsDelayTimer);
-          clearTimeout(remapButtonsHoldTimer);
-          remapButtonsHoldTimer = null;
-        }, 3000);
-      }, 3000);
-    }
   }
 }
 

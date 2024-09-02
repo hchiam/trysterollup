@@ -57,6 +57,8 @@ export class GameController {
   #manuallyMapGamepadToActions = false;
   #manuallyRemapLastButtonTimeout = null;
   #hold3ButtonsFor3SecondsToRemapButtons = false;
+  #remapButtonsHoldTimer = null;
+  #remapButtonsDelayTimer = null;
 
   join(/* https://github.com/dmotz/trystero#api joinRoom */) {
     if (this.debug) console.log("join");
@@ -318,18 +320,31 @@ export class GameController {
             }
           }
 
-          // if (
-          //   !(
-          //     this.#hold3ButtonsFor3SecondsToRemapButtons &&
-          //     this.getCurrentlyOnButtonsPerGamepad().some(
-          //       (gpButtonsOn) => gpButtonsOn.length === 3
-          //     )
-          //   )
-          // ) {
-          //   console.log("would be prevented");
-          // }
-          const actionToRun = this.buttonListeners[i];
-          actionToRun?.(currentlyPressedButton);
+          if (
+            !(
+              this.#hold3ButtonsFor3SecondsToRemapButtons &&
+              this.getCurrentlyOnButtonsPerGamepad().some(
+                (gpButtonsOn) => gpButtonsOn.length === 3
+              )
+            )
+          ) {
+            // actually run the listener action mapped to the current button:
+            const actionToRun = this.buttonListeners[i];
+            actionToRun?.(currentlyPressedButton);
+          } else {
+            // otherwise don't run any action - handle holding 3 buttons for 3 seconds:
+            if (this.#remapButtonsHoldTimer === null) {
+              this.#remapButtonsHoldTimer = setTimeout(() => {
+                clearTimeout(this.#remapButtonsDelayTimer);
+                this.#remapButtonsDelayTimer = setTimeout(() => {
+                  this.manuallyRemapButtons();
+                  clearTimeout(this.#remapButtonsDelayTimer);
+                  clearTimeout(this.#remapButtonsHoldTimer);
+                  this.#remapButtonsHoldTimer = null;
+                }, 3000);
+              }, 3000);
+            }
+          }
         }
       }
     }
