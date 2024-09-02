@@ -136,8 +136,8 @@ function updateUi() {
     .map((f) => f.name)
     .join(", ");
   $("#remapMessage").innerText = actionsToRemap
-    ? "Actions to remap: " + actionsToRemap
-    : "(Remapped all actions.)";
+    ? "Buttons to remap: " + actionsToRemap
+    : "";
 
   showGamepadButtons(game.gamepads);
 }

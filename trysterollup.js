@@ -12,7 +12,7 @@ export class GameController {
     buttonListeners = {}, // object key:number of functions for game pad buttons
     joystickListeners = {}, // object key:number of functions that take in a number
     generatingDocumentation = false,
-    manuallyMapGamepadToActions = true,
+    manuallyMapGamepadToActions = false,
   }) {
     this.room = null;
     this.updateUi = updateUi || function () {};
@@ -24,6 +24,7 @@ export class GameController {
     this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
+    this.#manuallyMapGamepadToActions = manuallyMapGamepadToActions;
     this.listenersToRemap = {};
     if (manuallyMapGamepadToActions) {
       this.manuallyRemapButtons();
@@ -35,13 +36,14 @@ export class GameController {
 
       this.#initializeKeyboardSupport();
 
-      this.#initializeGamepadSupport(manuallyMapGamepadToActions);
+      this.#initializeGamepadSupport();
     }
   }
   // (put private properties AFTER the constructor so documentation generates properly)
   #sendData = () => {}; // for room
   #getData = () => {}; // for room
   #currentButton = null;
+  #manuallyMapGamepadToActions = false;
   #manuallyRemapLastButtonTimeout = null;
 
   join(/* https://github.com/dmotz/trystero#api joinRoom */) {
@@ -87,6 +89,7 @@ export class GameController {
   }
 
   manuallyRemapButtons() {
+    this.#manuallyMapGamepadToActions = true;
     this.listenersToRemap = {};
     for (let actionIndex of Object.keys(this.buttonListeners)) {
       this.listenersToRemap["toRemap:" + actionIndex] =
@@ -215,7 +218,7 @@ export class GameController {
     });
   }
 
-  #initializeGamepadSupport(manuallyMapGamepadToActions = false) {
+  #initializeGamepadSupport() {
     const isGamePadApiSupported = "getGamepads" in navigator;
     if (isGamePadApiSupported) {
       window.addEventListener("gamepadconnected", (event) => {
@@ -234,9 +237,7 @@ export class GameController {
       this.#pollGamepads((gamepads) => {
         if (gamepads && gamepads.length) {
           // assuming only 1 gamepad:
-          this.#mapGamepadToActions(gamepads[0], {
-            manuallyMap: manuallyMapGamepadToActions,
-          });
+          this.#mapGamepadToActions(gamepads[0]);
         }
       });
     }
@@ -257,7 +258,7 @@ export class GameController {
    *
    * joystickListeners[0]: (number) => {}
    */
-  #mapGamepadToActions(gamepad, { manuallyMap = false }) {
+  #mapGamepadToActions(gamepad) {
     if (!gamepad) return;
 
     const gamepadButtons = gamepad.buttons;
@@ -267,7 +268,7 @@ export class GameController {
         if (gamepadButton.pressed || gamepadButton.touched) {
           const currentlyPressedButton = gamepadButton;
 
-          if (manuallyMap) {
+          if (this.#manuallyMapGamepadToActions) {
             if (this.isManuallyRemappingButtons()) {
               const negativeKeysToRemap = Object.keys(this.listenersToRemap);
 
