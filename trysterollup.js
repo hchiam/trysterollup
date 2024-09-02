@@ -12,6 +12,7 @@ export class GameController {
     buttonListeners = {}, // object key:number of functions for game pad buttons
     joystickListeners = {}, // object key:number of functions that take in a number
     generatingDocumentation = false,
+    manuallyMapGamepadToActions = true,
   }) {
     this.room = null;
     this.updateUi = updateUi || function () {};
@@ -23,18 +24,27 @@ export class GameController {
     this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
+    this.actionsToRemap = {};
+    if (manuallyMapGamepadToActions) {
+      for (let actionIndex of Object.keys(buttonListeners)) {
+        this.actionsToRemap[-actionIndex - 1] = buttonListeners[actionIndex];
+      }
+    }
+
     if (!generatingDocumentation) {
       // tell other peers currently in the room
       this.#sendData(this.localData);
 
       this.#initializeKeyboardSupport();
 
-      this.#initializeGamepadSupport();
+      this.#initializeGamepadSupport(manuallyMapGamepadToActions);
     }
   }
   // (put private properties AFTER the constructor so documentation generates properly)
   #sendData = () => {}; // for room
   #getData = () => {}; // for room
+  #currentButton = null;
+  #manuallyRemapLastButtonTimeout = null;
 
   join(/* https://github.com/dmotz/trystero#api joinRoom */) {
     if (this.debug) console.log("join");
@@ -71,6 +81,13 @@ export class GameController {
     this.update();
 
     return this;
+  }
+
+  isManuallyRemappingButtons() {
+    const negativeKeysToRemap = Object.keys(this.actionsToRemap).filter(
+      (key) => key < 0
+    );
+    return negativeKeysToRemap.length > 0;
   }
 
   #initializeRoomEventListeners() {
@@ -194,7 +211,7 @@ export class GameController {
     });
   }
 
-  #initializeGamepadSupport() {
+  #initializeGamepadSupport(manuallyMapGamepadToActions = false) {
     const isGamePadApiSupported = "getGamepads" in navigator;
     if (isGamePadApiSupported) {
       window.addEventListener("gamepadconnected", (event) => {
@@ -214,8 +231,7 @@ export class GameController {
         if (gamepads && gamepads.length) {
           // assuming only 1 gamepad:
           this.#mapGamepadToActions(gamepads[0], {
-            buttonListeners: this.buttonListeners,
-            joystickListeners: this.joystickListeners,
+            manuallyMap: manuallyMapGamepadToActions,
           });
         }
       });
@@ -237,10 +253,7 @@ export class GameController {
    *
    * joystickListeners[0]: (number) => {}
    */
-  #mapGamepadToActions(
-    gamepad,
-    { buttonListeners = [], joystickListeners = [] }
-  ) {
+  #mapGamepadToActions(gamepad, { manuallyMap = false }) {
     if (!gamepad) return;
 
     const gamepadButtons = gamepad.buttons;
@@ -248,8 +261,39 @@ export class GameController {
       for (let i = 0; i < gamepadButtons.length; i++) {
         const gamepadButton = gamepadButtons[i];
         if (gamepadButton.pressed || gamepadButton.touched) {
-          const buttonListener = buttonListeners[i];
-          buttonListener?.(gamepadButton);
+          const currentlyPressedButton = gamepadButton;
+
+          if (manuallyMap) {
+            if (this.isManuallyRemappingButtons()) {
+              const negativeKeysToRemap = Object.keys(
+                this.actionsToRemap
+              ).filter((key) => key < 0);
+
+              const actionKeyToRemap = negativeKeysToRemap[0];
+              const actionToRemap = this.actionsToRemap[actionKeyToRemap];
+
+              if (this.#currentButton !== currentlyPressedButton) {
+                this.#currentButton = currentlyPressedButton;
+
+                // overwrite to remap:
+                this.buttonListeners[i] = actionToRemap;
+
+                // delete action done remapping:
+                if (negativeKeysToRemap.length === 1) {
+                  // debounce to avoid triggering action right after remap:
+                  clearTimeout(this.#manuallyRemapLastButtonTimeout);
+                  this.#manuallyRemapLastButtonTimeout = setTimeout(() => {
+                    delete this.actionsToRemap[actionKeyToRemap];
+                  }, 200);
+                } else {
+                  delete this.actionsToRemap[actionKeyToRemap];
+                }
+              }
+            }
+          }
+
+          const actionToRun = this.buttonListeners[i];
+          actionToRun?.(currentlyPressedButton);
         }
       }
     }
@@ -258,7 +302,7 @@ export class GameController {
     if (gamepadAxes && gamepadAxes.length) {
       for (let i = 0; i < gamepadAxes.length; i++) {
         const gamepadAxis = gamepadAxes[i];
-        const joystickListener = joystickListeners[i];
+        const joystickListener = this.joystickListeners[i];
         joystickListener?.(gamepadAxis);
       }
     }

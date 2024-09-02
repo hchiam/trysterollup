@@ -1,5 +1,4 @@
 import { GameController } from "../trysterollup.js";
-import { remapDemo } from "./remapDemo.js";
 const $ = (s) => document.querySelector(s);
 
 // .../?room=someNumberOrId
@@ -38,10 +37,10 @@ const game = new GameController({
     1: right,
     2: left,
     3: up,
-    12: up,
-    13: down,
-    14: left,
-    15: right,
+    // 12: up,
+    // 13: down,
+    // 14: left,
+    // 15: right,
   },
   joystickListeners: {
     // Joy-Con:
@@ -55,6 +54,8 @@ const game = new GameController({
 game.localData.board = get2dArray(10, 10, "x");
 game.startGame();
 updateUi();
+
+window.game = game; // for browser console convenience
 
 $("#roomId").value = roomId_fromUrl;
 $("#roomId").addEventListener("change", () => {
@@ -98,8 +99,6 @@ $("#play").addEventListener("click", () => {
   game.update();
 });
 
-$("#remap").addEventListener("click", () => remapDemo());
-
 // button clicks work on both desktop and mobile and keyboard
 $("#left").addEventListener("click", () => {
   left();
@@ -128,6 +127,14 @@ function log(text) {
 
 function updateUi() {
   printPlayers();
+
+  const actionsToRemap = Object.values(game.actionsToRemap)
+    .map((f) => f.name)
+    .join(", ");
+  $("#remapMessage").innerText = actionsToRemap
+    ? actionsToRemap
+    : "(Remapped all actions.)";
+
   showGamepadButtons(game.gamepads);
 }
 
@@ -142,16 +149,24 @@ function printPlayers() {
 }
 
 function left() {
-  game.updatePosition(-1, 0);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(-1, 0);
+  }
 }
 function right() {
-  game.updatePosition(+1, 0);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(+1, 0);
+  }
 }
 function up() {
-  game.updatePosition(0, -1);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(0, -1);
+  }
 }
 function down() {
-  game.updatePosition(0, +1);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(0, +1);
+  }
 }
 
 function leftAxisHorizontal(data) {
