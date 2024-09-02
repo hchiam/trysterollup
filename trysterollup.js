@@ -12,7 +12,8 @@ export class GameController {
     buttonListeners = {}, // object key:number of functions for game pad buttons
     joystickListeners = {}, // object key:number of functions that take in a number
     generatingDocumentation = false,
-    manuallyMapGamepadToActions = true,
+    manuallyMapGamepadToActions = false,
+    hold3ButtonsFor3SecondsToRemapButtons = false,
   }) {
     this.room = null;
     this.updateUi = updateUi || function () {};
@@ -24,11 +25,19 @@ export class GameController {
     this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
 
+    this.#originalButtonListeners = {};
+    for (let actionIndex of Object.keys(this.buttonListeners)) {
+      this.#originalButtonListeners[actionIndex] =
+        this.buttonListeners[actionIndex];
+    }
+
+    this.#hold3ButtonsFor3SecondsToRemapButtons =
+      hold3ButtonsFor3SecondsToRemapButtons;
+
+    this.#manuallyMapGamepadToActions = manuallyMapGamepadToActions;
     this.listenersToRemap = {};
     if (manuallyMapGamepadToActions) {
-      for (let actionIndex of Object.keys(buttonListeners)) {
-        this.listenersToRemap[-actionIndex - 1] = buttonListeners[actionIndex];
-      }
+      this.manuallyRemapButtons();
     }
 
     if (!generatingDocumentation) {
@@ -37,14 +46,19 @@ export class GameController {
 
       this.#initializeKeyboardSupport();
 
-      this.#initializeGamepadSupport(manuallyMapGamepadToActions);
+      this.#initializeGamepadSupport();
     }
   }
   // (put private properties AFTER the constructor so documentation generates properly)
   #sendData = () => {}; // for room
   #getData = () => {}; // for room
-  #currentButton = null;
+  #originalButtonListeners = {};
+  #currentButton = null; // assumes one at a time, for manual remap functionality only
+  #manuallyMapGamepadToActions = false;
   #manuallyRemapLastButtonTimeout = null;
+  #hold3ButtonsFor3SecondsToRemapButtons = false;
+  #remapButtonsHoldTimer = null;
+  #remapButtonsDelayTimer = null;
 
   join(/* https://github.com/dmotz/trystero#api joinRoom */) {
     if (this.debug) console.log("join");
@@ -83,11 +97,41 @@ export class GameController {
     return this;
   }
 
-  isManuallyRemappingButtons() {
-    const negativeKeysToRemap = Object.keys(this.listenersToRemap).filter(
-      (key) => key < 0
+  /**
+   * for convenience, in case you want to detect holding 3 buttons down for 3 seconds
+   */
+  isHolding3ButtonsDown() {
+    return (
+      this.#hold3ButtonsFor3SecondsToRemapButtons &&
+      this.getCurrentlyOnButtonsPerGamepad().some(
+        (gpButtonsOn) => gpButtonsOn.length === 3
+      )
     );
+  }
+
+  isManuallyRemappingButtons() {
+    const negativeKeysToRemap = Object.keys(this.listenersToRemap);
     return negativeKeysToRemap.length > 0;
+  }
+
+  manuallyRemapButtons() {
+    this.#manuallyMapGamepadToActions = true;
+    this.listenersToRemap = {};
+    for (let actionIndex of Object.keys(this.buttonListeners)) {
+      this.listenersToRemap["toRemap:" + actionIndex] =
+        this.#originalButtonListeners[actionIndex];
+    }
+  }
+
+  getCurrentlyOnButtonsPerGamepad() {
+    return this.gamepads.map((gp) =>
+      gp.buttons
+        .map((b, i) => {
+          return { i, on: b.pressed || b.touched };
+        })
+        .filter((b) => b.on)
+        .map((b) => b.i)
+    );
   }
 
   #initializeRoomEventListeners() {
@@ -211,7 +255,7 @@ export class GameController {
     });
   }
 
-  #initializeGamepadSupport(manuallyMapGamepadToActions = false) {
+  #initializeGamepadSupport() {
     const isGamePadApiSupported = "getGamepads" in navigator;
     if (isGamePadApiSupported) {
       window.addEventListener("gamepadconnected", (event) => {
@@ -230,9 +274,7 @@ export class GameController {
       this.#pollGamepads((gamepads) => {
         if (gamepads && gamepads.length) {
           // assuming only 1 gamepad:
-          this.#mapGamepadToActions(gamepads[0], {
-            manuallyMap: manuallyMapGamepadToActions,
-          });
+          this.#mapGamepadToActions(gamepads[0]);
         }
       });
     }
@@ -253,7 +295,7 @@ export class GameController {
    *
    * joystickListeners[0]: (number) => {}
    */
-  #mapGamepadToActions(gamepad, { manuallyMap = false }) {
+  #mapGamepadToActions(gamepad) {
     if (!gamepad) return;
 
     const gamepadButtons = gamepad.buttons;
@@ -263,11 +305,9 @@ export class GameController {
         if (gamepadButton.pressed || gamepadButton.touched) {
           const currentlyPressedButton = gamepadButton;
 
-          if (manuallyMap) {
+          if (this.#manuallyMapGamepadToActions) {
             if (this.isManuallyRemappingButtons()) {
-              const negativeKeysToRemap = Object.keys(
-                this.listenersToRemap
-              ).filter((key) => key < 0);
+              const negativeKeysToRemap = Object.keys(this.listenersToRemap);
 
               const actionKeyToRemap = negativeKeysToRemap[0];
               const actionToRemap = this.listenersToRemap[actionKeyToRemap];
@@ -292,8 +332,31 @@ export class GameController {
             }
           }
 
-          const actionToRun = this.buttonListeners[i];
-          actionToRun?.(currentlyPressedButton);
+          if (
+            !(
+              this.#hold3ButtonsFor3SecondsToRemapButtons &&
+              this.getCurrentlyOnButtonsPerGamepad().some(
+                (gpButtonsOn) => gpButtonsOn.length === 3
+              )
+            )
+          ) {
+            // actually run the listener action mapped to the current button:
+            const actionToRun = this.buttonListeners[i];
+            actionToRun?.(currentlyPressedButton);
+          } else {
+            // otherwise don't run any action - handle holding 3 buttons for 3 seconds:
+            if (this.#remapButtonsHoldTimer === null) {
+              this.#remapButtonsHoldTimer = setTimeout(() => {
+                clearTimeout(this.#remapButtonsDelayTimer);
+                this.#remapButtonsDelayTimer = setTimeout(() => {
+                  this.manuallyRemapButtons();
+                  clearTimeout(this.#remapButtonsDelayTimer);
+                  clearTimeout(this.#remapButtonsHoldTimer);
+                  this.#remapButtonsHoldTimer = null;
+                }, 0);
+              }, 3000);
+            }
+          }
         }
       }
     }

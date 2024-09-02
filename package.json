@@ -1,6 +1,6 @@
 {
     "name": "trysterollup",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "main": "trysterollup.js",
     "unpkg": "trysterollup.min.js",
     "author": "hchiam",
@@ -15,6 +15,7 @@
     },
     "scripts": {
         "dev": "cd demo; yarn dev",
+        "deploy": "cd demo; yarn deploy",
         "pkg": "bash package.sh; git status -sb; echo; echo Make sure to update the version in package.json;",
         "pub": "yarn pkg; yarn publish",
         "reminder": "echo '\n-------REMINDERS:------- \n\n1) just set up the package.json part of \n https://docs.github.com/en/packages/quickstart \n\n2) run \"yarn publish\" \n (instead of \"npm publish --access public\") \n (you will be prompted to log in with 2FA if you have that set up) \n\n-------OTHERWISE:------- \n\n yarn pkg # to minify \n yarn pub # to publish\n\n------------------------\n'"

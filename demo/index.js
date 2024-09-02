@@ -5,6 +5,8 @@ const $ = (s) => document.querySelector(s);
 const roomId_fromUrl =
   new URLSearchParams(window.location.search).get("room") || "room42";
 
+const hold3ButtonsFor3SecondsToRemapButtons = true;
+
 const game = new GameController({
   updateUi: updateUi,
   keydownListeners: {
@@ -13,6 +15,7 @@ const game = new GameController({
     up: up,
     down: down,
   },
+  hold3ButtonsFor3SecondsToRemapButtons: hold3ButtonsFor3SecondsToRemapButtons,
   // buttonListeners: {
   //   // USB Joystick: Y X A B; up down left right;
   //   0: up,
@@ -33,14 +36,14 @@ const game = new GameController({
   // },
   buttonListeners: {
     // Joy-Con: B A Y X; up down left right;
-    0: down,
-    1: right,
-    2: left,
-    3: up,
-    // 12: up,
-    // 13: down,
-    // 14: left,
-    // 15: right,
+    0: b,
+    1: a,
+    2: y,
+    3: x,
+    12: up,
+    13: down,
+    14: left,
+    15: right,
   },
   joystickListeners: {
     // Joy-Con:
@@ -99,6 +102,10 @@ $("#play").addEventListener("click", () => {
   game.update();
 });
 
+$("#remap").addEventListener("click", () => {
+  game.manuallyRemapButtons();
+});
+
 // button clicks work on both desktop and mobile and keyboard
 $("#left").addEventListener("click", () => {
   left();
@@ -132,8 +139,8 @@ function updateUi() {
     .map((f) => f.name)
     .join(", ");
   $("#remapMessage").innerText = actionsToRemap
-    ? "Actions to remap: " + actionsToRemap
-    : "(Remapped all actions.)";
+    ? "Buttons to remap: " + actionsToRemap
+    : "";
 
   showGamepadButtons(game.gamepads);
 }
@@ -148,6 +155,26 @@ function printPlayers() {
   log(board + "\n\nplayers:\n" + players);
 }
 
+function b() {
+  if (!game.isManuallyRemappingButtons()) {
+    down();
+  }
+}
+function a() {
+  if (!game.isManuallyRemappingButtons()) {
+    right();
+  }
+}
+function y() {
+  if (!game.isManuallyRemappingButtons()) {
+    left();
+  }
+}
+function x() {
+  if (!game.isManuallyRemappingButtons()) {
+    up();
+  }
+}
 function left() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(-1, 0);
@@ -168,18 +195,36 @@ function down() {
     game.updatePosition(0, +1);
   }
 }
+if (hold3ButtonsFor3SecondsToRemapButtons) {
+  setInterval(() => {
+    monitor3Buttons3Seconds();
+  }, 250);
+}
+function monitor3Buttons3Seconds() {
+  if (game.isHolding3ButtonsDown()) {
+    if (game.isManuallyRemappingButtons()) {
+      $("#remapTimingInstruction").innerText = "RELEASE!";
+      $("#remapTimingInstruction").classList.add("release");
+    } else {
+      $("#remapTimingInstruction").innerText = "HOLD";
+      $("#remapTimingInstruction").classList.remove("release");
+    }
+  } else {
+    $("#remapTimingInstruction").innerText = "";
+  }
+}
 
 function leftAxisHorizontal(data) {
-  game.updatePosition(data, 0);
+  game.updatePosition(Math.round(data), 0);
 }
 function leftAxisVertical(data) {
-  game.updatePosition(0, data);
+  game.updatePosition(0, Math.round(data));
 }
 function rightAxisHorizontal(data) {
-  game.updatePosition(data, 0);
+  game.updatePosition(Math.round(data), 0);
 }
 function rightAxisVertical(data) {
-  game.updatePosition(0, data);
+  game.updatePosition(0, Math.round(data));
 }
 
 function showGamepadButtons(gamepads) {

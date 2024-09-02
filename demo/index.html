@@ -25,6 +25,15 @@
         /* pointer-events: none; */
         cursor: not-allowed;
       }
+      #remapTimingInstruction {
+        background: red;
+        color: white;
+        font-size: 2rem;
+      }
+      #remapTimingInstruction.release {
+        background: lime;
+        color: black;
+      }
     </style>
   </head>
   <body>
@@ -50,6 +59,12 @@
       <button id="copyDoc">copy documentation to clipboard</button>
     </div>
     <br />
+    <div>
+      <p>
+        To remap buttons: <button id="remap">click me</button> or hold down 3
+        buttons for 3 seconds. <span id="remapTimingInstruction"></span>
+      </p>
+    </div>
     <p id="remapMessage"></p>
     <div id="gamepads"></div>
     <script type="module" src="index.js"></script>
