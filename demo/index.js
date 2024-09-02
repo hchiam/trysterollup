@@ -5,6 +5,8 @@ const $ = (s) => document.querySelector(s);
 const roomId_fromUrl =
   new URLSearchParams(window.location.search).get("room") || "room42";
 
+const hold3ButtonsFor3SecondsToRemapButtons = true;
+
 const game = new GameController({
   updateUi: updateUi,
   keydownListeners: {
@@ -13,7 +15,7 @@ const game = new GameController({
     up: up,
     down: down,
   },
-  hold3ButtonsFor3SecondsToRemapButtons: true,
+  hold3ButtonsFor3SecondsToRemapButtons: hold3ButtonsFor3SecondsToRemapButtons,
   // buttonListeners: {
   //   // USB Joystick: Y X A B; up down left right;
   //   0: up,
@@ -191,6 +193,24 @@ function up() {
 function down() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(0, +1);
+  }
+}
+if (hold3ButtonsFor3SecondsToRemapButtons) {
+  setInterval(() => {
+    monitor3Buttons3Seconds();
+  }, 250);
+}
+function monitor3Buttons3Seconds() {
+  if (game.isHolding3ButtonsDown()) {
+    if (game.isManuallyRemappingButtons()) {
+      $("#remapTimingInstruction").innerText = "RELEASE!";
+      $("#remapTimingInstruction").classList.add("release");
+    } else {
+      $("#remapTimingInstruction").innerText = "HOLD";
+      $("#remapTimingInstruction").classList.remove("release");
+    }
+  } else {
+    $("#remapTimingInstruction").innerText = "";
   }
 }
 

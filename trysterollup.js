@@ -97,6 +97,18 @@ export class GameController {
     return this;
   }
 
+  /**
+   * for convenience, in case you want to detect holding 3 buttons down for 3 seconds
+   */
+  isHolding3ButtonsDown() {
+    return (
+      this.#hold3ButtonsFor3SecondsToRemapButtons &&
+      this.getCurrentlyOnButtonsPerGamepad().some(
+        (gpButtonsOn) => gpButtonsOn.length === 3
+      )
+    );
+  }
+
   isManuallyRemappingButtons() {
     const negativeKeysToRemap = Object.keys(this.listenersToRemap);
     return negativeKeysToRemap.length > 0;
@@ -341,7 +353,7 @@ export class GameController {
                   clearTimeout(this.#remapButtonsDelayTimer);
                   clearTimeout(this.#remapButtonsHoldTimer);
                   this.#remapButtonsHoldTimer = null;
-                }, 3000);
+                }, 0);
               }, 3000);
             }
           }
