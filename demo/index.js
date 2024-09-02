@@ -33,14 +33,14 @@ const game = new GameController({
   // },
   buttonListeners: {
     // Joy-Con: B A Y X; up down left right;
-    0: down,
-    1: right,
-    2: left,
-    3: up,
-    // 12: up,
-    // 13: down,
-    // 14: left,
-    // 15: right,
+    0: b,
+    1: a,
+    2: y,
+    3: x,
+    12: up,
+    13: down,
+    14: left,
+    15: right,
   },
   joystickListeners: {
     // Joy-Con:
@@ -152,6 +152,26 @@ function printPlayers() {
   log(board + "\n\nplayers:\n" + players);
 }
 
+function b() {
+  if (!game.isManuallyRemappingButtons()) {
+    down();
+  }
+}
+function a() {
+  if (!game.isManuallyRemappingButtons()) {
+    right();
+  }
+}
+function y() {
+  if (!game.isManuallyRemappingButtons()) {
+    left();
+  }
+}
+function x() {
+  if (!game.isManuallyRemappingButtons()) {
+    up();
+  }
+}
 function left() {
   if (!game.isManuallyRemappingButtons()) {
     game.updatePosition(-1, 0);
