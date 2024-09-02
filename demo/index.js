@@ -132,7 +132,7 @@ function updateUi() {
     .map((f) => f.name)
     .join(", ");
   $("#remapMessage").innerText = actionsToRemap
-    ? actionsToRemap
+    ? "Actions to remap: " + actionsToRemap
     : "(Remapped all actions.)";
 
   showGamepadButtons(game.gamepads);
@@ -170,17 +170,16 @@ function down() {
 }
 
 function leftAxisHorizontal(data) {
-  // TODO: demo using axis value
-  game.updateUi();
+  game.updatePosition(data, 0);
 }
 function leftAxisVertical(data) {
-  game.updateUi();
+  game.updatePosition(0, data);
 }
 function rightAxisHorizontal(data) {
-  game.updateUi();
+  game.updatePosition(data, 0);
 }
 function rightAxisVertical(data) {
-  game.updateUi();
+  game.updatePosition(0, data);
 }
 
 function showGamepadButtons(gamepads) {
