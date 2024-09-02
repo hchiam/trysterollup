@@ -7,12 +7,55 @@ const roomId_fromUrl =
 
 const game = new GameController({
   updateUi: updateUi,
-  buttonListeners: [up, right, down, left],
+  keydownListeners: {
+    left: left,
+    right: right,
+    up: up,
+    down: down,
+  },
+  // buttonListeners: {
+  //   // USB Joystick: Y X A B; up down left right;
+  //   0: up,
+  //   1: right,
+  //   2: down,
+  //   3: left,
+  //   12: up,
+  //   13: down,
+  //   14: left,
+  //   15: right,
+  // },
+  // joystickListeners: {
+  //   // USB Joystick:
+  //   0: leftAxisHorizontal,
+  //   1: leftAxisVertical,
+  //   // 3: rightAxisHorizontal, // not working well on my USB Joystick
+  //   // 4: rightAxisVertical, // not working well on my USB Joystick
+  // },
+  buttonListeners: {
+    // Joy-Con: B A Y X; up down left right;
+    0: down,
+    1: right,
+    2: left,
+    3: up,
+    // 12: up,
+    // 13: down,
+    // 14: left,
+    // 15: right,
+  },
+  joystickListeners: {
+    // Joy-Con:
+    0: leftAxisHorizontal,
+    1: leftAxisVertical,
+    2: rightAxisHorizontal,
+    3: rightAxisVertical,
+  },
 });
 // this is possible: game.buttonListeners = [up, right, down, left];
 game.localData.board = get2dArray(10, 10, "x");
 game.startGame();
 updateUi();
+
+window.game = game; // for browser console convenience
 
 $("#roomId").value = roomId_fromUrl;
 $("#roomId").addEventListener("change", () => {
@@ -84,6 +127,14 @@ function log(text) {
 
 function updateUi() {
   printPlayers();
+
+  const actionsToRemap = Object.values(game.actionsToRemap)
+    .map((f) => f.name)
+    .join(", ");
+  $("#remapMessage").innerText = actionsToRemap
+    ? "Actions to remap: " + actionsToRemap
+    : "(Remapped all actions.)";
+
   showGamepadButtons(game.gamepads);
 }
 
@@ -98,16 +149,37 @@ function printPlayers() {
 }
 
 function left() {
-  game.updatePosition(-1, 0);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(-1, 0);
+  }
 }
 function right() {
-  game.updatePosition(+1, 0);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(+1, 0);
+  }
 }
 function up() {
-  game.updatePosition(0, -1);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(0, -1);
+  }
 }
 function down() {
-  game.updatePosition(0, +1);
+  if (!game.isManuallyRemappingButtons()) {
+    game.updatePosition(0, +1);
+  }
+}
+
+function leftAxisHorizontal(data) {
+  game.updatePosition(data, 0);
+}
+function leftAxisVertical(data) {
+  game.updatePosition(0, data);
+}
+function rightAxisHorizontal(data) {
+  game.updatePosition(data, 0);
+}
+function rightAxisVertical(data) {
+  game.updatePosition(0, data);
 }
 
 function showGamepadButtons(gamepads) {
@@ -118,10 +190,10 @@ function showGamepadButtons(gamepads) {
       .map(
         (gamepad) => `<fieldset>
           <p>${gamepad.id}:</p>
-          <p>Axes:<br><span>${gamepad.axes
-            .map((a) => String(Math.round(a * 100)))
-            .map((a, i) => (i % 2 === 0 ? a + " " : a + ","))
-            .join("")}</span></p>
+          <pre>Axes:<br><span>${gamepad.axes
+            .map((a) => String(Math.round(a * 100)).padStart(4, " ") + "%")
+            .map((a, i) => (i % 2 === 0 ? a + " " : a + "<br/><br/>"))
+            .join("")}</span></pre>
           <p>Buttons:<br><span>${gamepad.buttons
             .map((b, i) => (i === 4 ? " " : "" + Number(b.pressed)))
             .join("")}</span></p>
