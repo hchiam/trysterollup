@@ -26,10 +26,7 @@ export class GameController {
 
     this.listenersToRemap = {};
     if (manuallyMapGamepadToActions) {
-      for (let actionIndex of Object.keys(buttonListeners)) {
-        this.listenersToRemap["toRemap:" + actionIndex] =
-          buttonListeners[actionIndex];
-      }
+      this.manuallyRemapButtons();
     }
 
     if (!generatingDocumentation) {
@@ -87,6 +84,14 @@ export class GameController {
   isManuallyRemappingButtons() {
     const negativeKeysToRemap = Object.keys(this.listenersToRemap);
     return negativeKeysToRemap.length > 0;
+  }
+
+  manuallyRemapButtons() {
+    this.listenersToRemap = {};
+    for (let actionIndex of Object.keys(this.buttonListeners)) {
+      this.listenersToRemap["toRemap:" + actionIndex] =
+        this.buttonListeners[actionIndex];
+    }
   }
 
   #initializeRoomEventListeners() {

@@ -99,6 +99,10 @@ $("#play").addEventListener("click", () => {
   game.update();
 });
 
+$("#remap").addEventListener("click", () => {
+  game.manuallyRemapButtons();
+});
+
 // button clicks work on both desktop and mobile and keyboard
 $("#left").addEventListener("click", () => {
   left();
