@@ -13,6 +13,7 @@ export class GameController {
     joystickListeners = {}, // object key:number of functions that take in a number
     generatingDocumentation = false,
     manuallyMapGamepadToActions = false,
+    hold3ButtonsFor3SecondsToRemapButtons = false,
   }) {
     this.room = null;
     this.updateUi = updateUi || function () {};
@@ -29,6 +30,9 @@ export class GameController {
       this.#originalButtonListeners[actionIndex] =
         this.buttonListeners[actionIndex];
     }
+
+    this.#hold3ButtonsFor3SecondsToRemapButtons =
+      hold3ButtonsFor3SecondsToRemapButtons;
 
     this.#manuallyMapGamepadToActions = manuallyMapGamepadToActions;
     this.listenersToRemap = {};
@@ -52,6 +56,7 @@ export class GameController {
   #currentButton = null; // assumes one at a time, for manual remap functionality only
   #manuallyMapGamepadToActions = false;
   #manuallyRemapLastButtonTimeout = null;
+  #hold3ButtonsFor3SecondsToRemapButtons = false;
 
   join(/* https://github.com/dmotz/trystero#api joinRoom */) {
     if (this.debug) console.log("join");
@@ -104,7 +109,7 @@ export class GameController {
     }
   }
 
-  getCurrentlyOnButtons() {
+  getCurrentlyOnButtonsPerGamepad() {
     return this.gamepads.map((gp) =>
       gp.buttons
         .map((b, i) => {
@@ -313,6 +318,16 @@ export class GameController {
             }
           }
 
+          // if (
+          //   !(
+          //     this.#hold3ButtonsFor3SecondsToRemapButtons &&
+          //     this.getCurrentlyOnButtonsPerGamepad().some(
+          //       (gpButtonsOn) => gpButtonsOn.length === 3
+          //     )
+          //   )
+          // ) {
+          //   console.log("would be prevented");
+          // }
           const actionToRun = this.buttonListeners[i];
           actionToRun?.(currentlyPressedButton);
         }

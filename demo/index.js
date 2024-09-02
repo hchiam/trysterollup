@@ -13,6 +13,7 @@ const game = new GameController({
     up: up,
     down: down,
   },
+  hold3ButtonsFor3SecondsToRemapButtons: true,
   // buttonListeners: {
   //   // USB Joystick: Y X A B; up down left right;
   //   0: up,
@@ -203,8 +204,8 @@ function down() {
 let remapButtonsHoldTimer = null;
 let remapButtonsDelayTimer = null;
 function anyButtonEventCallback() {
-  const gamepadsOnButtons = game.getCurrentlyOnButtons();
-  if (gamepadsOnButtons.some((buttonsOn) => buttonsOn.length === 3)) {
+  const gamepadsOnButtons = game.getCurrentlyOnButtonsPerGamepad();
+  if (gamepadsOnButtons.some((gpButtonsOn) => gpButtonsOn.length === 3)) {
     if (remapButtonsHoldTimer === null) {
       remapButtonsHoldTimer = setTimeout(() => {
         clearTimeout(remapButtonsDelayTimer);
@@ -213,11 +214,9 @@ function anyButtonEventCallback() {
           clearTimeout(remapButtonsDelayTimer);
           clearTimeout(remapButtonsHoldTimer);
           remapButtonsHoldTimer = null;
-        }, 1000);
+        }, 3000);
       }, 3000);
     }
-  } else {
-    clearTimeout(remapButtonsHoldTimer);
   }
 }
 
