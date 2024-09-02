@@ -1,4 +1,5 @@
 import { GameController } from "../trysterollup.js";
+import { remapDemo } from "./remapDemo.js";
 const $ = (s) => document.querySelector(s);
 
 // .../?room=someNumberOrId
@@ -96,6 +97,8 @@ $("#play").addEventListener("click", () => {
   game.localData.board[0][0] = "o";
   game.update();
 });
+
+$("#remap").addEventListener("click", () => remapDemo());
 
 // button clicks work on both desktop and mobile and keyboard
 $("#left").addEventListener("click", () => {
