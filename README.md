@@ -16,6 +16,6 @@ Just one of the things I'm learning. https://github.com/hchiam/learning
 
 Demo: https://hchiam-trysterollup-demo.surge.sh/?room=my_room
 
-Documentation: [/demo/documentation.md](https://github.com/hchiam/trysterollup/blob/main/demo/documentation.md)
+Documentation: [trysterollup/demo/documentation.md](https://github.com/hchiam/trysterollup/blob/main/demo/documentation.md)
 
 </div>
