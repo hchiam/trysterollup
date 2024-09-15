@@ -3,7 +3,7 @@
  * https://oxism.com/trystero
  */
 
-import { selfId, joinRoom } from "trystero/nostr";
+import { selfId, joinRoom } from "./trystero-nostr.0.20.0.min.js"; // so tauri doesn't complain about MIME type (because of TS?)
 
 export class GameController {
   constructor({
@@ -16,7 +16,7 @@ export class GameController {
     hold3ButtonsFor3SecondsToRemapButtons = false,
   }) {
     this.room = null;
-    this.updateUi = updateUi || function () {};
+    this.updateUi = updateUi || function () { };
     this.localData = { players: { [selfId]: { playerId: 0 } } };
     this.debug = true;
     this.debugMore = false;
@@ -50,8 +50,8 @@ export class GameController {
     }
   }
   // (put private properties AFTER the constructor so documentation generates properly)
-  #sendData = () => {}; // for room
-  #getData = () => {}; // for room
+  #sendData = () => { }; // for room
+  #getData = () => { }; // for room
   #originalButtonListeners = {};
   #currentButton = null; // assumes one at a time, for manual remap functionality only
   #manuallyMapGamepadToActions = false;
@@ -280,7 +280,7 @@ export class GameController {
     }
   }
 
-  #pollGamepads(processGamePads = () => {}) {
+  #pollGamepads(processGamePads = () => { }) {
     this.gamepads = navigator.getGamepads().filter(Boolean);
     processGamePads(this.gamepads);
     window.requestAnimationFrame(
