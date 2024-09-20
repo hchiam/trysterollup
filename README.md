@@ -8,13 +8,13 @@
 
 Trysterollup simplifies making multiplayer games for the web without needing a dedicated server.
 
-It's technically a wrapper around Trystero for P2P, as well as the gamepad API for convenience.
+It's technically a wrapper around Trystero for P2P, as well as the Gamepad API for convenience.
 
 This project came from experimenting with [trystero](https://github.com/dmotz/trystero) to make games while [learning WebRTC](https://github.com/hchiam/learning-webrtc).
 
-Just one of the things I'm learning. https://github.com/hchiam/learning
+Just one of the things I'm learning. <https://github.com/hchiam/learning>
 
-Demo: https://hchiam-trysterollup-demo.surge.sh/?room=my_room
+Demo: <https://hchiam-trysterollup-demo.surge.sh/?room=my_room>
 
 Documentation: [trysterollup/demo/documentation.md](https://github.com/hchiam/trysterollup/blob/main/demo/documentation.md)
 
