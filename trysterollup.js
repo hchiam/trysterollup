@@ -6,6 +6,11 @@
 import { selfId, joinRoom } from "./trystero-nostr.0.20.0.min.js"; // so tauri doesn't complain about MIME type (because of TS?)
 
 export class GameController {
+  /**
+   * Trysterollup game controller:
+   *
+   * https://github.com/hchiam/trysterollup
+   */
   constructor({
     updateUi, // callback function
     keydownListeners = {}, // key:left/right/up/down for keyboard
