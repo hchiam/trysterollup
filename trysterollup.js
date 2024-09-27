@@ -19,6 +19,8 @@ export class GameController {
     generatingDocumentation = false,
     manuallyMapGamepadToActions = false,
     hold3ButtonsFor3SecondsToRemapButtons = false,
+    gamepadConnectedCallback,
+    gamepadDisconnectedCallback,
   }) {
     this.room = null;
     this.updateUi = updateUi || function () {};
@@ -29,6 +31,9 @@ export class GameController {
     this.keydownListeners = keydownListeners; // keydownListeners.left: (event) => {}
     this.buttonListeners = buttonListeners; // buttonListeners[0]: () => {} // TODO: #11: optional param value?:number for analog button
     this.joystickListeners = joystickListeners; // joystickListeners[0]: (number) => {}
+    this.gamepadConnectedCallback = gamepadConnectedCallback || function () {};
+    this.gamepadDisconnectedCallback =
+      gamepadDisconnectedCallback || function () {};
 
     this.#originalButtonListeners = {};
     for (let actionIndex of Object.keys(this.buttonListeners)) {
@@ -265,12 +270,18 @@ export class GameController {
     if (isGamePadApiSupported) {
       window.addEventListener("gamepadconnected", (event) => {
         if (this.debug) console.log("gamepad connected:", event.gamepad);
+        if (this.#isFunction(this.gamepadConnectedCallback)) {
+          this.gamepadConnectedCallback(event);
+        }
         setTimeout(() => {
           this.updateUi();
         }, 100);
       });
       window.addEventListener("gamepaddisconnected", (event) => {
         if (this.debug) console.log("gamepad disconnected:", event.gamepad);
+        if (this.#isFunction(this.gamepadDisconnectedCallback)) {
+          this.gamepadDisconnectedCallback(event);
+        }
         setTimeout(() => {
           this.updateUi();
         }, 100);
@@ -374,5 +385,12 @@ export class GameController {
         joystickListener?.(gamepadAxis);
       }
     }
+  }
+
+  #isFunction(potentialCallback) {
+    return (
+      typeof potentialCallback === "function" &&
+      !/^class\s/.test(String(potentialCallback))
+    );
   }
 }

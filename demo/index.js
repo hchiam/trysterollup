@@ -52,6 +52,12 @@ const game = new GameController({
     2: rightAxisHorizontal,
     3: rightAxisVertical,
   },
+  gamepadConnectedCallback: (event) => {
+    console.log("gamepadConnectedCallback", event);
+  },
+  gamepadDisconnectedCallback: (event) => {
+    console.log("gamepadDisconnectedCallback", event);
+  },
 });
 // this is possible: game.buttonListeners = [up, right, down, left];
 game.localData.board = get2dArray(10, 10, "x");

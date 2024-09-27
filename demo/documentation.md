@@ -13,6 +13,8 @@ constructor({
     generatingDocumentation = false,
     manuallyMapGamepadToActions = false,
     hold3ButtonsFor3SecondsToRemapButtons = false,
+    gamepadConnectedCallback,
+    gamepadDisconnectedCallback,
   })
 ```
 
@@ -67,5 +69,9 @@ getCurrentlyOnButtonsPerGamepad()
 `buttonListeners`: object
 
 `joystickListeners`: object
+
+`gamepadConnectedCallback`: function
+
+`gamepadDisconnectedCallback`: function
 
 `listenersToRemap`: object
