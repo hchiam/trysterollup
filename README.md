@@ -6,7 +6,7 @@
 
 [![version](https://img.shields.io/npm/v/trysterollup.svg?style=flat-square&color=423a73)](https://www.npmjs.com/package/trysterollup) [![License: MIT](https://img.shields.io/badge/License-MIT-f5d20d.svg?style=flat-square)](https://github.com/hchiam/trysterollup/blob/main/LICENSE)
 
-Trysterollup is an experiment in making it easier to build multiplayer games - no server setup required.
+Trysterollup is an experiment in making it easier to build small multiplayer games - no server setup needed.
 
 It's technically a convenience wrapper around Trystero for P2P, as well as the Gamepad API.
 
