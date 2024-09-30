@@ -10,11 +10,11 @@ constructor({
     keydownListeners = {}, // key:left/right/up/down for keyboard
     buttonListeners = {}, // object key:number of functions for game pad buttons
     joystickListeners = {}, // object key:number of functions that take in a number
-    generatingDocumentation = false,
-    manuallyMapGamepadToActions = false,
-    hold3ButtonsFor3SecondsToRemapButtons = false,
     gamepadConnectedCallback,
     gamepadDisconnectedCallback,
+    manuallyMapGamepadToActions = false,
+    hold3ButtonsFor3SecondsToRemapButtons = false,
+    generatingDocumentation = false,
   })
 ```
 
