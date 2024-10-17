@@ -246,7 +246,7 @@ function showGamepadButtons(gamepads) {
             .map((a, i) => (i % 2 === 0 ? a + " " : a + "<br/><br/>"))
             .join("")}</span></pre>
           <p>Buttons:<br><span>${gamepad.buttons
-            .map((b, i) => (i === 4 ? " " : "" + Number(b.pressed)))
+            .map((b, i) => (i === 4 ? " " : "") + Number(b.pressed))
             .join("")}</span></p>
         </fieldset>`
       )
