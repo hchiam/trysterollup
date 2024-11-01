@@ -263,22 +263,25 @@ function showGamepadButtons(gamepads) {
   }
 }
 
+const gamepadIconUnknown = $("#gamepad-icon-unknown").src;
+const gamepadIconPS5 = $("#gamepad-icon-ps5").src;
+const gamepadIconJoyConL = $("#gamepad-icon-joycon_L").src;
+const gamepadIconJoyConR = $("#gamepad-icon-joycon_R").src;
+const gamepadIconJoyConLR = $("#gamepad-icon-joycon_LR").src;
 function showGamepadIcon(id) {
   id = id.replace(/ {2,}/g, " ");
-  let image = "controller_unknown";
+  let image = gamepadIconUnknown;
   const testMatch = false && id.match(/Generic USB Joystick/);
-  console.log("id.match(/Joy-Con (L+R)/)", id.match(/Joy-Con \(L\+R\)/), id);
-
   if (testMatch || id.match(/DualSense Wireless Controller/)) {
-    image = "controller_ps5";
+    image = gamepadIconPS5;
   } else if (id.match(/Joy-Con \(L\)/)) {
-    image = "controller_joycon_L";
+    image = gamepadIconJoyConL;
   } else if (id.match(/Joy-Con \(R\)/)) {
-    image = "controller_joycon_R";
+    image = gamepadIconJoyConR;
   } else if (id.match(/Joy-Con L\+R/)) {
-    image = "controller_joycon_L+R";
+    image = gamepadIconJoyConLR;
   }
-  return `<img class="gamepad-icon" src="./images/${image}.png">`;
+  return `<img class="gamepad-icon" src="${image}">`;
 }
 
 console.log("https://github.com/hchiam/trysterollup");
