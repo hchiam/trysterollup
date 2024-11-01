@@ -237,21 +237,48 @@ function showGamepadButtons(gamepads) {
   if (!gamepads) {
     $("#gamepads").innerHTML = "";
   } else {
-    $("#gamepads").innerHTML = gamepads
-      .map(
-        (gamepad) => `<fieldset>
-          <p>${gamepad.id}:</p>
-          <pre>Axes:<br><span>${gamepad.axes
-            .map((a) => String(Math.round(a * 100)).padStart(4, " ") + "%")
-            .map((a, i) => (i % 2 === 0 ? a + " " : a + "<br/><br/>"))
-            .join("")}</span></pre>
+    const html = gamepads
+      .map((gamepad) => {
+        const showAxes = false;
+        const axes = showAxes
+          ? `<pre>Axes:<br><span>${gamepad.axes
+              .map((a) => String(Math.round(a * 100)).padStart(4, " ") + "%")
+              .map((a, i) => (i % 2 === 0 ? a + " " : a + "<br/><br/>"))
+              .join("")}</span></pre>`
+          : "";
+
+        return `<fieldset>
+          <p>${showGamepadIcon(gamepad.id)}</p>
+          <p>Gamepad ID: ${gamepad.id}:</p>
+          ${axes}
           <p>Buttons:<br><span>${gamepad.buttons
             .map((b, i) => (i === 4 ? " " : "") + Number(b.pressed))
             .join("")}</span></p>
-        </fieldset>`
-      )
+        </fieldset>`;
+      })
       .join("");
+    if ($("#gamepads").innerHTML !== html) {
+      $("#gamepads").innerHTML = html;
+    }
   }
+}
+
+function showGamepadIcon(id) {
+  id = id.replace(/ {2,}/g, " ");
+  let image = "controller_unknown";
+  const testMatch = false && id.match(/Generic USB Joystick/);
+  console.log("id.match(/Joy-Con (L+R)/)", id.match(/Joy-Con \(L\+R\)/), id);
+
+  if (testMatch || id.match(/DualSense Wireless Controller/)) {
+    image = "controller_ps5";
+  } else if (id.match(/Joy-Con \(L\)/)) {
+    image = "controller_joycon_L";
+  } else if (id.match(/Joy-Con \(R\)/)) {
+    image = "controller_joycon_R";
+  } else if (id.match(/Joy-Con L\+R/)) {
+    image = "controller_joycon_L+R";
+  }
+  return `<img class="gamepad-icon" src="./images/${image}.png">`;
 }
 
 console.log("https://github.com/hchiam/trysterollup");
