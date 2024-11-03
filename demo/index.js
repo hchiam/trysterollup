@@ -237,7 +237,7 @@ function showGamepadButtons(gamepads) {
   if (!gamepads) {
     $("#gamepads").innerHTML = "";
   } else {
-    const html = gamepads
+    const html = [...gamepads] // need [...] for ChromeOS chrome
       .map((gamepad) => {
         const showAxes = false;
         const axes = showAxes
