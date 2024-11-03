@@ -61,7 +61,7 @@ export class GameController {
   }
   // (put private properties AFTER the constructor so documentation generates properly)
   #sendData = () => {}; // for room
-  #getData = () => {}; // for room
+  #onDataUpdate = () => {}; // for room
   #originalButtonListeners = {};
   #currentButton = null; // assumes one at a time, for manual remap functionality only
   #manuallyMapGamepadToActions = false;
@@ -73,9 +73,9 @@ export class GameController {
   join(/* https://github.com/dmotz/trystero#api joinRoom */) {
     if (this.debug) console.log("join");
     this.room = joinRoom(...arguments);
-    const [sendData, getData] = this.room.makeAction("data");
+    const [sendData, onDataUpdate] = this.room.makeAction("data");
     this.#sendData = sendData;
-    this.#getData = getData;
+    this.#onDataUpdate = onDataUpdate;
 
     this.#initializeRoomEventListeners();
 
@@ -161,12 +161,12 @@ export class GameController {
   }
 
   #listenForPeersSendingData() {
-    this.#getData((data, peerId) => {
+    this.#onDataUpdate((data, peerId) => {
       if (this.debugMore) {
         console.log(
           `-----|\n\this.localData BEFORE:\n${JSON.stringify(this.localData)}`
         );
-        console.log("#getData data peerId", JSON.stringify(data), peerId);
+        console.log("#onDataUpdate data peerId", JSON.stringify(data), peerId);
       }
 
       Object.entries(data).forEach((x) => {
