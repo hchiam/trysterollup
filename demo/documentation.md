@@ -14,7 +14,6 @@ constructor({
     gamepadDisconnectedCallback,
     manuallyMapGamepadToActions = false,
     hold3ButtonsFor3SecondsToRemapButtons = false,
-    generatingDocumentation = false,
   })
 ```
 

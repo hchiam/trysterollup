@@ -20,7 +20,6 @@ export class GameController {
     gamepadDisconnectedCallback,
     manuallyMapGamepadToActions = false,
     hold3ButtonsFor3SecondsToRemapButtons = false,
-    generatingDocumentation = false,
   }) {
     this.room = null;
     this.updateUi = updateUi || function () {};
@@ -50,14 +49,12 @@ export class GameController {
       this.manuallyRemapButtons();
     }
 
-    if (!generatingDocumentation) {
-      // tell other peers currently in the room
-      this.#sendData(this.localData);
+    // tell other peers currently in the room
+    this.#sendData(this.localData);
 
-      this.#initializeKeyboardSupport();
+    this.#initializeKeyboardSupport();
 
-      this.#initializeGamepadSupport();
-    }
+    this.#initializeGamepadSupport();
   }
   // (put private properties AFTER the constructor so documentation generates properly)
   #sendData = () => {}; // for room
