@@ -80,11 +80,22 @@ export class GameController {
 
     this.#initializeRoomEventListeners();
 
-    // // TODO-1: don't need getOccupants
-    // const config = arguments[0];
-    // const roomId = arguments[1];
-    // console.log("occupants:");
-    // console.log(await getOccupants(config, roomId));
+    // TODO-1: don't need getOccupants
+    const config = arguments[0];
+    const roomId = arguments[1];
+    const occupants = await getOccupants(config, roomId);
+    console.log(
+      "occupants:",
+      occupants,
+      "selfId", // doesn't match any of the occupants, maybe for security
+      selfId,
+      "not me:",
+      occupants.filter((id) => id !== selfId)
+    );
+    this.#sendData(
+      this.localData,
+      occupants.filter((id) => id !== selfId)
+    );
 
     return this.room;
   }
