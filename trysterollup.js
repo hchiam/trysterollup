@@ -6,7 +6,7 @@
 import {
   selfId,
   joinRoom,
-  getOccupants,
+  // getOccupants,
 } from "./trystero-firebase.0.20.0.min.js"; // so tauri doesn't complain about MIME type (because of TS?)
 
 export class GameController {
@@ -80,22 +80,22 @@ export class GameController {
 
     this.#initializeRoomEventListeners();
 
-    // TODO-1: don't need getOccupants
-    const config = arguments[0];
-    const roomId = arguments[1];
-    const occupants = await getOccupants(config, roomId);
-    console.log(
-      "occupants:",
-      occupants,
-      "selfId", // doesn't match any of the occupants, maybe for security
-      selfId,
-      "not me:",
-      occupants.filter((id) => id !== selfId)
-    );
-    this.#sendData(
-      this.localData,
-      occupants.filter((id) => id !== selfId)
-    );
+    // // TODO-1: don't need getOccupants
+    // const config = arguments[0];
+    // const roomId = arguments[1];
+    // const occupants = await getOccupants(config, roomId);
+    // console.log(
+    //   "occupants:",
+    //   occupants,
+    //   "selfId", // doesn't match any of the occupants, maybe for security
+    //   selfId,
+    //   "not me:",
+    //   occupants.filter((id) => id !== selfId)
+    // );
+    // this.#sendData(
+    //   this.localData,
+    //   occupants.filter((id) => id !== selfId)
+    // );
 
     return this.room;
   }
