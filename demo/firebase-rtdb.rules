@@ -1,0 +1,14 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "__trystero__": {
+      ".read": false,
+      ".write": false,
+      "$room_id": {
+        ".read": true,
+        ".write": true
+      }
+    }
+  }
+}

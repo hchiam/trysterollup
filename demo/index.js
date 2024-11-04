@@ -1,6 +1,8 @@
 import { GameController } from "../trysterollup.js";
 const $ = (s) => document.querySelector(s);
 
+import firebaseInfo from "./firebase-info.json";
+
 // .../?room=someNumberOrId
 const roomId_fromUrl =
   new URLSearchParams(window.location.search).get("room") || "room42";
@@ -89,7 +91,8 @@ $("#join").addEventListener("click", () => {
   const password = $("#password").value || "silly_pwd";
   game.join(
     {
-      appId: "hchiam-trysterollup-demo",
+      appId: firebaseInfo.rtdbUrlPrefix + ".firebaseio.com/",
+      // appId: "hchiam-trysterollup-demo", // for nostr
       password: password,
     },
     roomId,

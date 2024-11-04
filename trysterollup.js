@@ -3,7 +3,11 @@
  * https://oxism.com/trystero
  */
 
-import { selfId, joinRoom } from "./trystero-nostr.0.20.0.min.js"; // so tauri doesn't complain about MIME type (because of TS?)
+import {
+  selfId,
+  joinRoom,
+  getOccupants,
+} from "./trystero-firebase.0.20.0.min.js"; // so tauri doesn't complain about MIME type (because of TS?)
 
 export class GameController {
   /**
@@ -67,7 +71,7 @@ export class GameController {
   #remapButtonsHoldTimer = null;
   #remapButtonsDelayTimer = null;
 
-  join(/* https://github.com/dmotz/trystero#api joinRoom */) {
+  async join(/* https://github.com/dmotz/trystero#api joinRoom */) {
     if (this.debug) console.log("join");
     this.room = joinRoom(...arguments);
     const [sendData, onDataUpdate] = this.room.makeAction("data");
@@ -75,6 +79,12 @@ export class GameController {
     this.#onDataUpdate = onDataUpdate;
 
     this.#initializeRoomEventListeners();
+
+    // // TODO-1: don't need getOccupants
+    // const config = arguments[0];
+    // const roomId = arguments[1];
+    // console.log("occupants:");
+    // console.log(await getOccupants(config, roomId));
 
     return this.room;
   }
@@ -87,6 +97,8 @@ export class GameController {
   update(dataOverride = null) {
     if (dataOverride) this.localData = dataOverride;
     this.updateUi();
+    if (this.debug) console.log("update", this.localData);
+
     this.#sendData(this.localData);
     return this;
   }
@@ -145,10 +157,17 @@ export class GameController {
     this.#signalNewcomers();
     this.#listenForPeersSendingData();
     this.#listenForPeersLeaving();
+
+    // TODO-1: is this the right place for #runHostLogic?
+    // this.#runHostLogic();
   }
 
   #signalNewcomers() {
+    console.log("#signalNewcomers", this.room);
+
     this.room?.onPeerJoin((peerId) => {
+      console.log("#signalNewcomers onpeerjoin");
+
       this.#syncPlayerIdOfIncomingPeer(peerId);
 
       if (this.debug) console.log("onPeerJoin", peerId);
@@ -159,6 +178,8 @@ export class GameController {
 
   #listenForPeersSendingData() {
     this.#onDataUpdate((data, peerId) => {
+      console.log(1);
+
       if (this.debugMore) {
         console.log(
           `-----|\n\this.localData BEFORE:\n${JSON.stringify(this.localData)}`
@@ -390,4 +411,87 @@ export class GameController {
       !/^class\s/.test(String(potentialCallback))
     );
   }
+
+  /** run this once only */
+  // TODO-1: ?re-run this only if turned into host? test if swapped host, will 2 be running host code?
+  #runHostLogic() {
+    const amIHost = this.localData.players[selfId].isHost;
+    const [sendHostUpdate, onReceiveHostUpdate] =
+      this.room.makeAction("hostUpdate");
+
+    onReceiveHostUpdate((data) => {
+      if (!amIHost) {
+        console.log("Received reconciled game state from host:", data.state);
+        // TODO-1: reconcileLocalState(data.state); // Apply the reconciled state from the host
+      }
+    });
+
+    if (amIHost) {
+      // host tracks game state for everyone else:
+
+      // TODO-1: expose this game clock interval for devs:
+      const gameClockInterval = 16; // 16ms ~ 60 updates per second
+
+      const pendingActions = new Map(); // Store actions keyed by peerId (only first action per interval)
+
+      // TODO-1: new action? or combine this onDataUpdate call into #listenForPeersSendingData?
+      // Host listens for player actions and stores the first one per player
+      this.#onDataUpdate((data, peerId) => {
+        console.log(2);
+
+        if (!pendingActions.has(peerId)) {
+          // Only store the first action per player per interval
+          const timestamp = Date.now(); // Using timestamp to track order of receipt
+          console.log(`Received action from ${peerId}:`, data.actionData);
+
+          // Add the timestamp of action received to the data
+          pendingActions.set(peerId, { ...data, timestamp });
+        } else {
+          console.log(
+            `Ignoring subsequent action from ${peerId} in this interval`
+          );
+        }
+      });
+
+      // Host processes all actions at the end of each interval
+      setInterval(() => {
+        if (pendingActions.size > 0) {
+          // Only process if actions were received
+          const actionsArray = [...pendingActions.entries()];
+
+          // Custom function for sorting/handling actions, provided by the game dev
+          const reconciledState = processActionsCustom(actionsArray);
+
+          // Send the reconciled state back to all players
+          sendHostUpdate({ state: reconciledState });
+          // TODO-1:
+          // this.#sendData({ state: reconciledState });
+
+          pendingActions.clear(); // Clear actions after processing
+        }
+        // If no actions were received, skip sending an update (lazy)
+      }, gameClockInterval); // Expose this interval to game devs
+    }
+  }
+}
+
+// TODO-1: expose the Custom Action Sorting Handling Function but with a default:
+// TODO-1: expose applyGameLogic():
+function processActionsCustom(actionsArray) {
+  // Sorting actions by the 'timestamp' field (to order when the action was received)
+  actionsArray.sort((a, b) => a[1].timestamp - b[1].timestamp);
+
+  // Process the actions based on the sorted order:
+  const finalState = {};
+
+  actionsArray.forEach(([peerId, action]) => {
+    // Game-specific logic to update the final state based on each action
+    finalState[peerId] = applyGameLogic(action.actionData);
+  });
+
+  return finalState;
+}
+
+function applyGameLogic(data) {
+  return data;
 }
