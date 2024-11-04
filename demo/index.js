@@ -4,6 +4,8 @@ const $ = (s) => document.querySelector(s);
 // import firebaseInfo from "./firebase-info.json";
 import supabaseInfo from "./supabase-info.json";
 
+console.log("supabase");
+
 // .../?room=someNumberOrId
 const roomId_fromUrl =
   new URLSearchParams(window.location.search).get("room") || "room42";
