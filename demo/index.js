@@ -1,7 +1,8 @@
 import { GameController } from "../trysterollup.js";
 const $ = (s) => document.querySelector(s);
 
-import firebaseInfo from "./firebase-info.json";
+// import firebaseInfo from "./firebase-info.json";
+import supabaseInfo from "./supabase-info.json";
 
 // .../?room=someNumberOrId
 const roomId_fromUrl =
@@ -91,7 +92,9 @@ $("#join").addEventListener("click", () => {
   const password = $("#password").value || "silly_pwd";
   game.join(
     {
-      appId: firebaseInfo.rtdbUrlPrefix + ".firebaseio.com/",
+      appId: supabaseInfo.prefix + ".supabase.co",
+      supabaseKey: supabaseInfo.apiKey,
+      // appId: firebaseInfo.rtdbUrlPrefix + ".firebaseio.com/",
       // appId: "hchiam-trysterollup-demo", // for nostr
       password: password,
     },

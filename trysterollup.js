@@ -7,7 +7,7 @@ import {
   selfId,
   joinRoom,
   // getOccupants,
-} from "./trystero-firebase.0.20.0.min.js"; // so tauri doesn't complain about MIME type (because of TS?)
+} from "./trystero-supabase.0.20.0.min.js"; // so tauri doesn't complain about MIME type (because of TS?)
 
 export class GameController {
   /**
@@ -71,7 +71,7 @@ export class GameController {
   #remapButtonsHoldTimer = null;
   #remapButtonsDelayTimer = null;
 
-  async join(/* https://github.com/dmotz/trystero#api joinRoom */) {
+  join(/* https://github.com/dmotz/trystero#api joinRoom */) {
     if (this.debug) console.log("join");
     this.room = joinRoom(...arguments);
     const [sendData, onDataUpdate] = this.room.makeAction("data");
@@ -96,6 +96,7 @@ export class GameController {
     //   this.localData,
     //   occupants.filter((id) => id !== selfId)
     // );
+    console.log("this.room.getPeers()", this.room.getPeers());
 
     return this.room;
   }
