@@ -239,7 +239,8 @@ function showGamepadButtons(gamepads) {
   } else {
     const html = [...gamepads] // need [...] for ChromeOS chrome
       .map((gamepad) => {
-        const showAxes = false;
+        const showAxes = true;
+        // const showAxes = false;
         const axes = showAxes
           ? `<pre>Axes:<br><span>${gamepad.axes
               .map((a) => String(Math.round(a * 100)).padStart(4, " ") + "%")
@@ -253,7 +254,9 @@ function showGamepadButtons(gamepads) {
           ${axes}
           <p>Buttons:<br><span>${gamepad.buttons
             .map((b, i) => (i === 4 ? " " : "") + Number(b.pressed))
-            .join("")}</span></p>
+            .join("")}</span><br>${gamepad.buttons
+          .map((b, i) => (i === 4 ? " " : "") + String(i).slice(-1))
+          .join("")}</p>
         </fieldset>`;
       })
       .join("");

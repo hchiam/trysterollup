@@ -286,7 +286,7 @@ export class GameController {
 
       this.#pollGamepads((gamepads) => {
         if (gamepads && gamepads.length) {
-          // assuming only 1 gamepad:
+          // assuming only 1 gamepad can control player:
           this.#mapGamepadToActions(gamepads[0]);
         }
       });
@@ -294,11 +294,143 @@ export class GameController {
   }
 
   #pollGamepads(processGamePads = () => {}) {
-    this.gamepads = navigator.getGamepads().filter(Boolean);
+    this.gamepads = this.#splitJoyConHalves(
+      navigator.getGamepads().filter(Boolean)
+    );
     processGamePads(this.gamepads);
     window.requestAnimationFrame(
       this.#pollGamepads.bind(this, processGamePads)
     );
+  }
+
+  #splitJoyConHalves(gp) {
+    const gamepads = [];
+    for (let i = 0; i < gp.length; i++) {
+      const isJoyConLR = /Joy-Con L\+R/.test(gp[i].id);
+      if (!isJoyConLR) {
+        gamepads.push(gp[i]);
+      } else {
+        const left = this.#makeFakeGamepadObject(gp[i]);
+        const right = this.#makeFakeGamepadObject(gp[i]);
+
+        left.id = gp[i].id.replace(/Joy-Con L\+R/, "Joy-Con (L)");
+        [left.axes[0], left.axes[1]] = [left.axes[1], -left.axes[0]];
+        left.axes[2] = 0;
+        left.axes[3] = 0;
+        left.buttons[0] = this.#deepCloneButton(left.buttons[14]);
+        left.buttons[1] = this.#deepCloneButton(left.buttons[13]);
+        left.buttons[2] = this.#deepCloneButton(left.buttons[12]);
+        left.buttons[3] = this.#deepCloneButton(left.buttons[15]);
+        this.#disableButton(left.buttons[4]); // disable "L" (like ZL) because of ergonomics
+        this.#disableButton(left.buttons[5]);
+        this.#disableButton(left.buttons[6]); // disable ZL because of ergonomics
+        this.#disableButton(left.buttons[7]);
+        const b18 = this.#deepCloneButton(left.buttons[18]);
+        const b19 = this.#deepCloneButton(left.buttons[19]);
+        left.buttons[4] = b18;
+        left.buttons[5] = b19;
+        this.#disableButton(left.buttons[8]); // this (holding) L -ve button already triggers record
+        this.#disableButton(left.buttons[9]); // disable because this is R controller's
+        // leave left.buttons[10] enabled for clicking the L axis button
+        this.#disableButton(left.buttons[11]); // disable because this is for clicking the R axis button
+        this.#disableButton(left.buttons[12]);
+        this.#disableButton(left.buttons[13]);
+        this.#disableButton(left.buttons[14]);
+        this.#disableButton(left.buttons[15]);
+        this.#disableButton(left.buttons[16]); // disable because this is R controller's
+        this.#disableButton(left.buttons[17]); // disable because R square button already triggers home
+        this.#disableButton(left.buttons[18]); // SL -> "L" (as in ZL)
+        this.#disableButton(left.buttons[19]); // SR -> "R" (as in ZR)
+        this.#disableButton(left.buttons[20]);
+        this.#disableButton(left.buttons[21]);
+
+        right.id = gp[i].id.replace(/Joy-Con L\+R/, "Joy-Con (R)");
+        right.axes[0] = 0;
+        right.axes[1] = 0;
+        [right.axes[2], right.axes[3]] = [-right.axes[3], right.axes[2]];
+        const b0 = this.#deepCloneButton(right.buttons[0]);
+        const b1 = this.#deepCloneButton(right.buttons[1]);
+        const b2 = this.#deepCloneButton(right.buttons[2]);
+        const b3 = this.#deepCloneButton(right.buttons[3]);
+        right.buttons[0] = b1;
+        right.buttons[1] = b3;
+        right.buttons[2] = b0;
+        right.buttons[3] = b2;
+        this.#disableButton(right.buttons[4]);
+        this.#disableButton(right.buttons[5]); // disable "R" (like ZR) because of ergonomics
+        this.#disableButton(right.buttons[6]);
+        this.#disableButton(right.buttons[7]); // disable "R" (like ZR) because of ergonomics
+        const b20 = this.#deepCloneButton(right.buttons[20]);
+        const b21 = this.#deepCloneButton(right.buttons[21]);
+        right.buttons[4] = b20;
+        right.buttons[5] = b21;
+        this.#disableButton(right.buttons[8]); // disable because this is L controller's
+        this.#disableButton(right.buttons[9]); // disable because (holding) L -ve button already triggers record
+        this.#disableButton(right.buttons[10]); // disable because this is for clicking the L axis button
+        // leave right.buttons[11] enabled for clicking the R axis button
+        this.#disableButton(right.buttons[12]);
+        this.#disableButton(right.buttons[13]);
+        this.#disableButton(right.buttons[14]);
+        this.#disableButton(right.buttons[15]);
+        this.#disableButton(right.buttons[16]); // this R square button already triggers home
+        this.#disableButton(right.buttons[17]); // disable because this is L controller's
+        this.#disableButton(right.buttons[18]);
+        this.#disableButton(right.buttons[19]);
+        this.#disableButton(right.buttons[20]); // SL -> "L" (as in ZL)
+        this.#disableButton(right.buttons[21]); // SR -> "R" (as in ZR)
+
+        // TODO: fix indices of all controllers including those that follow:
+        right.index++;
+
+        // TODO: separate vibrationActuator for L and R
+
+        gamepads.push(left);
+        gamepads.push(right);
+      }
+    }
+
+    return gamepads;
+  }
+
+  #makeFakeGamepadObject(gamepad) {
+    return {
+      axes: [...gamepad.axes],
+      // [0, 0, 0, 0],
+      // buttons: [...gamepad.buttons],
+      buttons: gamepad.buttons.map((b) => {
+        return { pressed: b.pressed, touched: b.touched, value: b.value };
+      }),
+      // [
+      //   {
+      //     pressed: false,
+      //     touched: false,
+      //     value: 0,
+      //   },
+      // ],
+      connected: gamepad.connected,
+      id: gamepad.id,
+      index: gamepad.index,
+      mapping: gamepad.mapping,
+      timestamp: gamepad.timestamp,
+      vibrationActuator: {
+        effects: gamepad.vibrationActuator.effects,
+        type: gamepad.vibrationActuator.type,
+      },
+    };
+  }
+
+  #deepCloneButton(buttonReference) {
+    return {
+      pressed: buttonReference.pressed,
+      touched: buttonReference.touched,
+      value: buttonReference.value,
+    };
+  }
+
+  #disableButton(buttonReference) {
+    buttonReference.pressed = false;
+    buttonReference.touched = false;
+    buttonReference.value = false;
   }
 
   /**
