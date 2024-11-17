@@ -7,6 +7,22 @@
 .b2 svg.gamepadIcon .b2,
 .b3 svg.gamepadIcon .b3,
 .b4 svg.gamepadIcon .b4,
-.b5 svg.gamepadIcon .b5 {
+.b5 svg.gamepadIcon .b5,
+.b6 svg.gamepadIcon .b6,
+.b7 svg.gamepadIcon .b7,
+.b8 svg.gamepadIcon .b8,
+.b9 svg.gamepadIcon .b9,
+.b10 svg.gamepadIcon .b10,
+.b11 svg.gamepadIcon .b11,
+.b12 svg.gamepadIcon .b12,
+.b13 svg.gamepadIcon .b13,
+.b14 svg.gamepadIcon .b14,
+.b15 svg.gamepadIcon .b15,
+.b16 svg.gamepadIcon .b16,
+.b17 svg.gamepadIcon .b17,
+.b18 svg.gamepadIcon .b18,
+.b19 svg.gamepadIcon .b19,
+.b20 svg.gamepadIcon .b20,
+.b21 svg.gamepadIcon .b21 {
     fill: var(--btn-on)
 }
