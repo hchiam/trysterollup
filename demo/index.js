@@ -7,7 +7,7 @@ const $$ = (s) => [...document.querySelectorAll(s)];
 const roomId_fromUrl =
   new URLSearchParams(window.location.search).get("room") || "room42";
 
-const hold3ButtonsFor3SecondsToRemapButtons = true;
+const hold3ButtonsFor3SecondsToRemapButtons = false;
 
 const gamepadsContainer = $("#gamepads");
 
