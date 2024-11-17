@@ -1,6 +1,6 @@
 <svg class="gamepadIcon startAnimation" height="${size}" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="206" y="270" width="45" height="39" fill="#1E1E1E"></rect>
-<path d="M250.5 353C238.698 353 227.379 348.312 219.034 339.966C210.688 331.621 206 320.302 206 308.5L250.5 308.5L250.5 353Z" fill="#1E1E1E"></path>
+<rect class="b6 b8" x="206" y="270" width="45" height="39" fill="#1E1E1E"></rect>
+<path class="b6 b8" d="M250.5 353C238.698 353 227.379 348.312 219.034 339.966C210.688 331.621 206 320.302 206 308.5L250.5 308.5L250.5 353Z" fill="#1E1E1E"></path>
 <rect x="215" y="254" width="336" height="92" rx="45" fill="#12CCFD"></rect>
 <rect x="215" y="254" width="336" height="48" fill="#12CCFD"></rect>
 <circle class="b10" cx="304" cy="300" r="26" fill="#1E1E1E"></circle>

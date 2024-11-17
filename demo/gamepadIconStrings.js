@@ -1,8 +1,8 @@
 const size = 250;
 
 export const Lsvg = `<svg class="gamepadIcon startAnimation" height="${size}" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="206" y="270" width="45" height="39" fill="#1E1E1E"></rect>
-<path d="M250.5 353C238.698 353 227.379 348.312 219.034 339.966C210.688 331.621 206 320.302 206 308.5L250.5 308.5L250.5 353Z" fill="#1E1E1E"></path>
+<rect class="b6 b8" x="206" y="270" width="45" height="39" fill="#1E1E1E"></rect>
+<path class="b6 b8" d="M250.5 353C238.698 353 227.379 348.312 219.034 339.966C210.688 331.621 206 320.302 206 308.5L250.5 308.5L250.5 353Z" fill="#1E1E1E"></path>
 <rect x="215" y="254" width="336" height="92" rx="45" fill="#12CCFD"></rect>
 <rect x="215" y="254" width="336" height="48" fill="#12CCFD"></rect>
 <circle class="b10" cx="304" cy="300" r="26" fill="#1E1E1E"></circle>
@@ -87,8 +87,8 @@ export const PS5svg = `<svg class="gamepadIcon startAnimation" height="${size}" 
 </svg>`;
 
 export const Rsvg = `<svg class="gamepadIcon startAnimation" height="${size}" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="45" height="39" transform="matrix(-1 0 0 1 551 270)" fill="#1E1E1E"></rect>
-<path d="M506.5 353C518.302 353 529.621 348.312 537.966 339.966C546.312 331.621 551 320.302 551 308.5L506.5 308.5L506.5 353Z" fill="#1E1E1E"></path>
+<rect class="b7 b8" width="45" height="39" transform="matrix(-1 0 0 1 551 270)" fill="#1E1E1E"></rect>
+<path class="b7 b8" d="M506.5 353C518.302 353 529.621 348.312 537.966 339.966C546.312 331.621 551 320.302 551 308.5L506.5 308.5L506.5 353Z" fill="#1E1E1E"></path>
 <rect width="336" height="92" rx="45" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"></rect>
 <rect width="336" height="48" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"></rect>
 <circle class="b10" cx="348.754" cy="300" r="26" fill="#1E1E1E"></circle>
@@ -98,7 +98,7 @@ export const Rsvg = `<svg class="gamepadIcon startAnimation" height="${size}" vi
 <circle class="b3" cx="441.523" cy="279.142" r="10" transform="rotate(-135 441.523 279.142)" fill="#1E1E1E"></circle>
 <rect class="b9" width="7" height="20" rx="3.5" transform="matrix(-1 0 0 1 502 264)" fill="#1E1E1E"></rect>
 <rect class="b9" width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 488 270)" fill="#1E1E1E"></rect>
-<rect class="16" width="20" height="20" rx="10" transform="matrix(-1 0 0 1 297 274)" fill="#1E1E1E"></rect>
+<rect class="b16" width="20" height="20" rx="10" transform="matrix(-1 0 0 1 297 274)" fill="#1E1E1E"></rect>
 <rect class="b4" width="24" height="7" transform="matrix(-1 0 0 1 309 246)" fill="#D9D9D9"></rect>
 <rect class="b5" width="24" height="7" transform="matrix(-1 0 0 1 465 246)" fill="#D9D9D9"></rect>
 </svg>`;
