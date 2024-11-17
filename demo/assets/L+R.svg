@@ -1,32 +1,32 @@
-<svg width="757" height="598" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="212.556" cy="325.479" rx="66" ry="151" transform="rotate(13.9938 212.556 325.479)" fill="#1E1E1E"/>
-<ellipse cx="66" cy="151" rx="66" ry="151" transform="matrix(-0.970322 0.241816 0.241816 0.970322 573.638 163)" fill="#1E1E1E"/>
-<rect width="45" height="39" transform="matrix(0 1 1 0 474 111)" fill="#1E1E1E"/>
-<path d="M557 155.5C557 143.698 552.312 132.379 543.966 124.034C535.621 115.688 524.302 111 512.5 111L512.5 155.5L557 155.5Z" fill="#1E1E1E"/>
-<rect width="336" height="92" rx="45" transform="matrix(0 1 1 0 458 120)" fill="#FF4A37"/>
-<rect width="336" height="48" transform="matrix(0 1 1 0 458 120)" fill="#FF4A37"/>
-<circle cx="504" cy="313.246" r="26" transform="rotate(-90 504 313.246)" fill="#1E1E1E"/>
-<circle cx="529.104" cy="219.77" r="10" transform="rotate(135 529.104 219.77)" fill="#1E1E1E"/>
-<circle cx="506.477" cy="197.142" r="10" transform="rotate(135 506.477 197.142)" fill="#1E1E1E"/>
-<circle cx="505.77" cy="243.104" r="10" transform="rotate(135 505.77 243.104)" fill="#1E1E1E"/>
-<circle cx="483.142" cy="220.477" r="10" transform="rotate(135 483.142 220.477)" fill="#1E1E1E"/>
-<rect width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 468 160)" fill="#1E1E1E"/>
-<rect width="7" height="20" rx="3.5" transform="matrix(1 0 0 -1 474 174)" fill="#1E1E1E"/>
-<rect width="20" height="20" rx="10" transform="matrix(0 1 1 0 478 365)" fill="#1E1E1E"/>
-<rect width="24" height="7" transform="matrix(0 1 1 0 450 353)" fill="#D9D9D9"/>
-<rect width="24" height="7" transform="matrix(0 1 1 0 450 197)" fill="#D9D9D9"/>
-<rect x="284" y="111" width="45" height="39" transform="rotate(90 284 111)" fill="#1E1E1E"/>
-<path d="M201 155.5C201 143.698 205.688 132.379 214.034 124.034C222.379 115.688 233.698 111 245.5 111L245.5 155.5L201 155.5Z" fill="#1E1E1E"/>
-<rect x="300" y="120" width="336" height="92" rx="45" transform="rotate(90 300 120)" fill="#12CCFD"/>
-<rect x="300" y="120" width="336" height="48" transform="rotate(90 300 120)" fill="#12CCFD"/>
-<circle cx="254" cy="209" r="26" transform="rotate(90 254 209)" fill="#1E1E1E"/>
-<circle cx="228.896" cy="314.477" r="10" transform="rotate(-45 228.896 314.477)" fill="#1E1E1E"/>
-<circle cx="251.523" cy="337.104" r="10" transform="rotate(-45 251.523 337.104)" fill="#1E1E1E"/>
-<circle cx="252.23" cy="291.142" r="10" transform="rotate(-45 252.23 291.142)" fill="#1E1E1E"/>
-<circle cx="274.858" cy="313.77" r="10" transform="rotate(-45 274.858 313.77)" fill="#1E1E1E"/>
-<rect x="290" y="159" width="10" height="20" rx="5" transform="rotate(90 290 159)" fill="#1E1E1E"/>
-<rect x="280" y="365" width="20" height="20" transform="rotate(90 280 365)" fill="#1E1E1E"/>
-<rect x="308" y="353" width="24" height="7" transform="rotate(90 308 353)" fill="#D9D9D9"/>
-<rect x="308" y="197" width="24" height="7" transform="rotate(90 308 197)" fill="#D9D9D9"/>
-<rect x="300" y="120" width="158" height="336" fill="#1E1E1E"/>
+<svg class="gamepadIcon startAnimation" height="${size}" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="212.556" cy="325.479" rx="66" ry="151" transform="rotate(13.9938 212.556 325.479)" fill="#1E1E1E"></ellipse>
+<ellipse cx="66" cy="151" rx="66" ry="151" transform="matrix(-0.970322 0.241816 0.241816 0.970322 573.638 163)" fill="#1E1E1E"></ellipse>
+<rect class="b5 b7" width="45" height="39" transform="matrix(0 1 1 0 474 111)" fill="#1E1E1E"></rect>
+<path class="b5 b7" d="M557 155.5C557 143.698 552.312 132.379 543.966 124.034C535.621 115.688 524.302 111 512.5 111L512.5 155.5L557 155.5Z" fill="#1E1E1E"></path>
+<rect width="336" height="92" rx="45" transform="matrix(0 1 1 0 458 120)" fill="#FF4A37"></rect>
+<rect width="336" height="48" transform="matrix(0 1 1 0 458 120)" fill="#FF4A37"></rect>
+<circle class="b11" cx="504" cy="313.246" r="26" transform="rotate(-90 504 313.246)" fill="#1E1E1E"></circle>
+<circle class="b1" cx="529.104" cy="219.77" r="10" transform="rotate(135 529.104 219.77)" fill="#1E1E1E"></circle>
+<circle class="b3" cx="506.477" cy="197.142" r="10" transform="rotate(135 506.477 197.142)" fill="#1E1E1E"></circle>
+<circle class="b0" cx="505.77" cy="243.104" r="10" transform="rotate(135 505.77 243.104)" fill="#1E1E1E"></circle>
+<circle class="b2" cx="483.142" cy="220.477" r="10" transform="rotate(135 483.142 220.477)" fill="#1E1E1E"></circle>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 468 160)" fill="#1E1E1E"></rect>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(1 0 0 -1 474 174)" fill="#1E1E1E"></rect>
+<rect class="b16" width="20" height="20" rx="10" transform="matrix(0 1 1 0 478 365)" fill="#1E1E1E"></rect>
+<rect width="24" height="7" transform="matrix(0 1 1 0 450 353)" fill="#D9D9D9"></rect>
+<rect width="24" height="7" transform="matrix(0 1 1 0 450 197)" fill="#D9D9D9"></rect>
+<rect class="b4 b6" x="284" y="111" width="45" height="39" transform="rotate(90 284 111)" fill="#1E1E1E"></rect>
+<path class="b4 b6" d="M201 155.5C201 143.698 205.688 132.379 214.034 124.034C222.379 115.688 233.698 111 245.5 111L245.5 155.5L201 155.5Z" fill="#1E1E1E"></path>
+<rect x="300" y="120" width="336" height="92" rx="45" transform="rotate(90 300 120)" fill="#12CCFD"></rect>
+<rect x="300" y="120" width="336" height="48" transform="rotate(90 300 120)" fill="#12CCFD"></rect>
+<circle class="b10" cx="254" cy="209" r="26" transform="rotate(90 254 209)" fill="#1E1E1E"></circle>
+<circle class="b14" cx="228.896" cy="314.477" r="10" transform="rotate(-45 228.896 314.477)" fill="#1E1E1E"></circle>
+<circle class="b13" cx="251.523" cy="337.104" r="10" transform="rotate(-45 251.523 337.104)" fill="#1E1E1E"></circle>
+<circle class="b12" cx="252.23" cy="291.142" r="10" transform="rotate(-45 252.23 291.142)" fill="#1E1E1E"></circle>
+<circle class="b15" cx="274.858" cy="313.77" r="10" transform="rotate(-45 274.858 313.77)" fill="#1E1E1E"></circle>
+<rect class="b8" x="290" y="159" width="10" height="20" rx="5" transform="rotate(90 290 159)" fill="#1E1E1E"></rect>
+<rect class="b17" x="280" y="365" width="20" height="20" transform="rotate(90 280 365)" fill="#1E1E1E"></rect>
+<rect x="308" y="353" width="24" height="7" transform="rotate(90 308 353)" fill="#D9D9D9"></rect>
+<rect x="308" y="197" width="24" height="7" transform="rotate(90 308 197)" fill="#D9D9D9"></rect>
+<rect x="300" y="120" width="158" height="336" fill="#1E1E1E"></rect>
 </svg>

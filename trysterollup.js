@@ -294,9 +294,9 @@ export class GameController {
   }
 
   #pollGamepads(processGamePads = () => {}) {
-    this.gamepads = this.#splitJoyConHalves(
-      navigator.getGamepads().filter(Boolean)
-    );
+    this.gamepads = //this.#splitJoyConHalves(
+      navigator.getGamepads().filter(Boolean);
+    //);
     processGamePads(this.gamepads);
     window.requestAnimationFrame(
       this.#pollGamepads.bind(this, processGamePads)

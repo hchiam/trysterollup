@@ -1,16 +1,16 @@
-<svg width="757" height="598" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="45" height="39" transform="matrix(-1 0 0 1 551 270)" fill="#1E1E1E"/>
-<path d="M506.5 353C518.302 353 529.621 348.312 537.966 339.966C546.312 331.621 551 320.302 551 308.5L506.5 308.5L506.5 353Z" fill="#1E1E1E"/>
-<rect width="336" height="92" rx="45" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"/>
-<rect width="336" height="48" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"/>
-<circle cx="348.754" cy="300" r="26" fill="#1E1E1E"/>
-<circle cx="442.23" cy="325.104" r="10" transform="rotate(-135 442.23 325.104)" fill="#1E1E1E"/>
-<circle cx="464.858" cy="302.477" r="10" transform="rotate(-135 464.858 302.477)" fill="#1E1E1E"/>
-<circle cx="418.896" cy="301.77" r="10" transform="rotate(-135 418.896 301.77)" fill="#1E1E1E"/>
-<circle cx="441.523" cy="279.142" r="10" transform="rotate(-135 441.523 279.142)" fill="#1E1E1E"/>
-<rect width="7" height="20" rx="3.5" transform="matrix(-1 0 0 1 502 264)" fill="#1E1E1E"/>
-<rect width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 488 270)" fill="#1E1E1E"/>
-<rect width="20" height="20" rx="10" transform="matrix(-1 0 0 1 297 274)" fill="#1E1E1E"/>
-<rect width="24" height="7" transform="matrix(-1 0 0 1 309 246)" fill="#D9D9D9"/>
-<rect width="24" height="7" transform="matrix(-1 0 0 1 465 246)" fill="#D9D9D9"/>
+<svg class="gamepadIcon startAnimation" height="${size}" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="45" height="39" transform="matrix(-1 0 0 1 551 270)" fill="#1E1E1E"></rect>
+<path d="M506.5 353C518.302 353 529.621 348.312 537.966 339.966C546.312 331.621 551 320.302 551 308.5L506.5 308.5L506.5 353Z" fill="#1E1E1E"></path>
+<rect width="336" height="92" rx="45" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"></rect>
+<rect width="336" height="48" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"></rect>
+<circle class="b10" cx="348.754" cy="300" r="26" fill="#1E1E1E"></circle>
+<circle class="b0" cx="442.23" cy="325.104" r="10" transform="rotate(-135 442.23 325.104)" fill="#1E1E1E"></circle>
+<circle class="b1" cx="464.858" cy="302.477" r="10" transform="rotate(-135 464.858 302.477)" fill="#1E1E1E"></circle>
+<circle class="b2" cx="418.896" cy="301.77" r="10" transform="rotate(-135 418.896 301.77)" fill="#1E1E1E"></circle>
+<circle class="b3" cx="441.523" cy="279.142" r="10" transform="rotate(-135 441.523 279.142)" fill="#1E1E1E"></circle>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(-1 0 0 1 502 264)" fill="#1E1E1E"></rect>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 488 270)" fill="#1E1E1E"></rect>
+<rect class="16" width="20" height="20" rx="10" transform="matrix(-1 0 0 1 297 274)" fill="#1E1E1E"></rect>
+<rect class="b4" width="24" height="7" transform="matrix(-1 0 0 1 309 246)" fill="#D9D9D9"></rect>
+<rect class="b5" width="24" height="7" transform="matrix(-1 0 0 1 465 246)" fill="#D9D9D9"></rect>
 </svg>

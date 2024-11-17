@@ -5,45 +5,45 @@ export const Lsvg = `<svg class="gamepadIcon startAnimation" height="${size}" vi
 <path d="M250.5 353C238.698 353 227.379 348.312 219.034 339.966C210.688 331.621 206 320.302 206 308.5L250.5 308.5L250.5 353Z" fill="#1E1E1E"></path>
 <rect x="215" y="254" width="336" height="92" rx="45" fill="#12CCFD"></rect>
 <rect x="215" y="254" width="336" height="48" fill="#12CCFD"></rect>
-<circle cx="304" cy="300" r="26" fill="#1E1E1E"></circle>
+<circle class="b10" cx="304" cy="300" r="26" fill="#1E1E1E"></circle>
 <circle class="b0" cx="409.477" cy="325.104" r="10" transform="rotate(-135 409.477 325.104)" fill="#1E1E1E"></circle>
 <circle class="b1" cx="432.104" cy="302.477" r="10" transform="rotate(-135 432.104 302.477)" fill="#1E1E1E"></circle>
 <circle class="b2" cx="386.142" cy="301.77" r="10" transform="rotate(-135 386.142 301.77)" fill="#1E1E1E"></circle>
 <circle class="b3" cx="408.77" cy="279.142" r="10" transform="rotate(-135 408.77 279.142)" fill="#1E1E1E"></circle>
-<rect x="254" y="264" width="10" height="20" rx="5" fill="#1E1E1E"></rect>
-<rect x="460" y="274" width="20" height="20" fill="#1E1E1E"></rect>
-<rect x="448" y="246" width="24" height="7" fill="#D9D9D9"></rect>
-<rect x="292" y="246" width="24" height="7" fill="#D9D9D9"></rect>
+<rect class="b9" x="254" y="264" width="10" height="20" rx="5" fill="#1E1E1E"></rect>
+<rect class="b16" x="460" y="274" width="20" height="20" fill="#1E1E1E"></rect>
+<rect class="b5" x="448" y="246" width="24" height="7" fill="#D9D9D9"></rect>
+<rect class="b4" x="292" y="246" width="24" height="7" fill="#D9D9D9"></rect>
 </svg>`;
 
 export const LRsvg = `<svg class="gamepadIcon startAnimation" height="${size}" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
 <ellipse cx="212.556" cy="325.479" rx="66" ry="151" transform="rotate(13.9938 212.556 325.479)" fill="#1E1E1E"></ellipse>
 <ellipse cx="66" cy="151" rx="66" ry="151" transform="matrix(-0.970322 0.241816 0.241816 0.970322 573.638 163)" fill="#1E1E1E"></ellipse>
-<rect width="45" height="39" transform="matrix(0 1 1 0 474 111)" fill="#1E1E1E"></rect>
-<path d="M557 155.5C557 143.698 552.312 132.379 543.966 124.034C535.621 115.688 524.302 111 512.5 111L512.5 155.5L557 155.5Z" fill="#1E1E1E"></path>
+<rect class="b5 b7" width="45" height="39" transform="matrix(0 1 1 0 474 111)" fill="#1E1E1E"></rect>
+<path class="b5 b7" d="M557 155.5C557 143.698 552.312 132.379 543.966 124.034C535.621 115.688 524.302 111 512.5 111L512.5 155.5L557 155.5Z" fill="#1E1E1E"></path>
 <rect width="336" height="92" rx="45" transform="matrix(0 1 1 0 458 120)" fill="#FF4A37"></rect>
 <rect width="336" height="48" transform="matrix(0 1 1 0 458 120)" fill="#FF4A37"></rect>
-<circle cx="504" cy="313.246" r="26" transform="rotate(-90 504 313.246)" fill="#1E1E1E"></circle>
-<circle cx="529.104" cy="219.77" r="10" transform="rotate(135 529.104 219.77)" fill="#1E1E1E"></circle>
-<circle cx="506.477" cy="197.142" r="10" transform="rotate(135 506.477 197.142)" fill="#1E1E1E"></circle>
-<circle cx="505.77" cy="243.104" r="10" transform="rotate(135 505.77 243.104)" fill="#1E1E1E"></circle>
-<circle cx="483.142" cy="220.477" r="10" transform="rotate(135 483.142 220.477)" fill="#1E1E1E"></circle>
-<rect width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 468 160)" fill="#1E1E1E"></rect>
-<rect width="7" height="20" rx="3.5" transform="matrix(1 0 0 -1 474 174)" fill="#1E1E1E"></rect>
-<rect width="20" height="20" rx="10" transform="matrix(0 1 1 0 478 365)" fill="#1E1E1E"></rect>
+<circle class="b11" cx="504" cy="313.246" r="26" transform="rotate(-90 504 313.246)" fill="#1E1E1E"></circle>
+<circle class="b1" cx="529.104" cy="219.77" r="10" transform="rotate(135 529.104 219.77)" fill="#1E1E1E"></circle>
+<circle class="b3" cx="506.477" cy="197.142" r="10" transform="rotate(135 506.477 197.142)" fill="#1E1E1E"></circle>
+<circle class="b0" cx="505.77" cy="243.104" r="10" transform="rotate(135 505.77 243.104)" fill="#1E1E1E"></circle>
+<circle class="b2" cx="483.142" cy="220.477" r="10" transform="rotate(135 483.142 220.477)" fill="#1E1E1E"></circle>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 468 160)" fill="#1E1E1E"></rect>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(1 0 0 -1 474 174)" fill="#1E1E1E"></rect>
+<rect class="b16" width="20" height="20" rx="10" transform="matrix(0 1 1 0 478 365)" fill="#1E1E1E"></rect>
 <rect width="24" height="7" transform="matrix(0 1 1 0 450 353)" fill="#D9D9D9"></rect>
 <rect width="24" height="7" transform="matrix(0 1 1 0 450 197)" fill="#D9D9D9"></rect>
-<rect x="284" y="111" width="45" height="39" transform="rotate(90 284 111)" fill="#1E1E1E"></rect>
-<path d="M201 155.5C201 143.698 205.688 132.379 214.034 124.034C222.379 115.688 233.698 111 245.5 111L245.5 155.5L201 155.5Z" fill="#1E1E1E"></path>
+<rect class="b4 b6" x="284" y="111" width="45" height="39" transform="rotate(90 284 111)" fill="#1E1E1E"></rect>
+<path class="b4 b6" d="M201 155.5C201 143.698 205.688 132.379 214.034 124.034C222.379 115.688 233.698 111 245.5 111L245.5 155.5L201 155.5Z" fill="#1E1E1E"></path>
 <rect x="300" y="120" width="336" height="92" rx="45" transform="rotate(90 300 120)" fill="#12CCFD"></rect>
 <rect x="300" y="120" width="336" height="48" transform="rotate(90 300 120)" fill="#12CCFD"></rect>
-<circle cx="254" cy="209" r="26" transform="rotate(90 254 209)" fill="#1E1E1E"></circle>
-<circle cx="228.896" cy="314.477" r="10" transform="rotate(-45 228.896 314.477)" fill="#1E1E1E"></circle>
-<circle cx="251.523" cy="337.104" r="10" transform="rotate(-45 251.523 337.104)" fill="#1E1E1E"></circle>
-<circle cx="252.23" cy="291.142" r="10" transform="rotate(-45 252.23 291.142)" fill="#1E1E1E"></circle>
-<circle cx="274.858" cy="313.77" r="10" transform="rotate(-45 274.858 313.77)" fill="#1E1E1E"></circle>
-<rect x="290" y="159" width="10" height="20" rx="5" transform="rotate(90 290 159)" fill="#1E1E1E"></rect>
-<rect x="280" y="365" width="20" height="20" transform="rotate(90 280 365)" fill="#1E1E1E"></rect>
+<circle class="b10" cx="254" cy="209" r="26" transform="rotate(90 254 209)" fill="#1E1E1E"></circle>
+<circle class="b14" cx="228.896" cy="314.477" r="10" transform="rotate(-45 228.896 314.477)" fill="#1E1E1E"></circle>
+<circle class="b13" cx="251.523" cy="337.104" r="10" transform="rotate(-45 251.523 337.104)" fill="#1E1E1E"></circle>
+<circle class="b12" cx="252.23" cy="291.142" r="10" transform="rotate(-45 252.23 291.142)" fill="#1E1E1E"></circle>
+<circle class="b15" cx="274.858" cy="313.77" r="10" transform="rotate(-45 274.858 313.77)" fill="#1E1E1E"></circle>
+<rect class="b8" x="290" y="159" width="10" height="20" rx="5" transform="rotate(90 290 159)" fill="#1E1E1E"></rect>
+<rect class="b17" x="280" y="365" width="20" height="20" transform="rotate(90 280 365)" fill="#1E1E1E"></rect>
 <rect x="308" y="353" width="24" height="7" transform="rotate(90 308 353)" fill="#D9D9D9"></rect>
 <rect x="308" y="197" width="24" height="7" transform="rotate(90 308 197)" fill="#D9D9D9"></rect>
 <rect x="300" y="120" width="158" height="336" fill="#1E1E1E"></rect>
@@ -91,14 +91,14 @@ export const Rsvg = `<svg class="gamepadIcon startAnimation" height="${size}" vi
 <path d="M506.5 353C518.302 353 529.621 348.312 537.966 339.966C546.312 331.621 551 320.302 551 308.5L506.5 308.5L506.5 353Z" fill="#1E1E1E"></path>
 <rect width="336" height="92" rx="45" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"></rect>
 <rect width="336" height="48" transform="matrix(-1 0 0 1 542 254)" fill="#FF4A37"></rect>
-<circle cx="348.754" cy="300" r="26" fill="#1E1E1E"></circle>
+<circle class="b10" cx="348.754" cy="300" r="26" fill="#1E1E1E"></circle>
 <circle class="b0" cx="442.23" cy="325.104" r="10" transform="rotate(-135 442.23 325.104)" fill="#1E1E1E"></circle>
 <circle class="b1" cx="464.858" cy="302.477" r="10" transform="rotate(-135 464.858 302.477)" fill="#1E1E1E"></circle>
 <circle class="b2" cx="418.896" cy="301.77" r="10" transform="rotate(-135 418.896 301.77)" fill="#1E1E1E"></circle>
 <circle class="b3" cx="441.523" cy="279.142" r="10" transform="rotate(-135 441.523 279.142)" fill="#1E1E1E"></circle>
-<rect width="7" height="20" rx="3.5" transform="matrix(-1 0 0 1 502 264)" fill="#1E1E1E"></rect>
-<rect width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 488 270)" fill="#1E1E1E"></rect>
-<rect width="20" height="20" rx="10" transform="matrix(-1 0 0 1 297 274)" fill="#1E1E1E"></rect>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(-1 0 0 1 502 264)" fill="#1E1E1E"></rect>
+<rect class="b9" width="7" height="20" rx="3.5" transform="matrix(0 1 1 0 488 270)" fill="#1E1E1E"></rect>
+<rect class="16" width="20" height="20" rx="10" transform="matrix(-1 0 0 1 297 274)" fill="#1E1E1E"></rect>
 <rect class="b4" width="24" height="7" transform="matrix(-1 0 0 1 309 246)" fill="#D9D9D9"></rect>
 <rect class="b5" width="24" height="7" transform="matrix(-1 0 0 1 465 246)" fill="#D9D9D9"></rect>
 </svg>`;
