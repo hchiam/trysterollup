@@ -1,4 +1,4 @@
-const size = 250;
+const size = 150;
 
 export const Lsvg = `<svg class="gamepadIcon startAnimation" height="${size}" viewBox="0 0 757 598" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect class="b6 b8" x="206" y="270" width="45" height="39" fill="#1E1E1E"></rect>
