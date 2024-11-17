@@ -168,25 +168,21 @@ function printPlayers() {
 function b() {
   if (!game.isManuallyRemappingButtons()) {
     down();
-    highlightPressedGamepadButton("b0");
   }
 }
 function a() {
   if (!game.isManuallyRemappingButtons()) {
     right();
-    highlightPressedGamepadButton("b1");
   }
 }
 function y() {
   if (!game.isManuallyRemappingButtons()) {
     left();
-    highlightPressedGamepadButton("b2");
   }
 }
 function x() {
   if (!game.isManuallyRemappingButtons()) {
     up();
-    highlightPressedGamepadButton("b3");
   }
 }
 function left() {
@@ -256,7 +252,12 @@ function showGamepadButtons(gamepads) {
               .join("")}</span></pre>`
           : "";
 
-        return `<fieldset>
+        const buttonOnClasses = gamepad.buttons
+          .map((b, i) => (b.pressed ? "b" + i : ""))
+          .filter(Boolean)
+          .join(" ");
+
+        return `<fieldset class="${buttonOnClasses}">
           <p>${showGamepadIcon(gamepad.id)}</p>
           <p>Gamepad ID: ${gamepad.id}:</p>
           ${axes}
@@ -294,13 +295,6 @@ function showGamepadIcon(id) {
     return gamepadIconJoyConLR;
   }
   return `<img class="gamepad-icon" src="${image}">`;
-}
-
-function highlightPressedGamepadButton(className) {
-  gamepadsContainer.classList.add(className);
-  setTimeout(() => {
-    gamepadsContainer.classList.remove(className);
-  }, 100);
 }
 
 console.log("https://github.com/hchiam/trysterollup");

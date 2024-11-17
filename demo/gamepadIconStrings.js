@@ -6,10 +6,10 @@ export const Lsvg = `<svg class="gamepadIcon startAnimation" height="${size}" vi
 <rect x="215" y="254" width="336" height="92" rx="45" fill="#12CCFD"></rect>
 <rect x="215" y="254" width="336" height="48" fill="#12CCFD"></rect>
 <circle cx="304" cy="300" r="26" fill="#1E1E1E"></circle>
-<circle cx="409.477" cy="325.104" r="10" transform="rotate(-135 409.477 325.104)" fill="#1E1E1E"></circle>
-<circle cx="432.104" cy="302.477" r="10" transform="rotate(-135 432.104 302.477)" fill="#1E1E1E"></circle>
-<circle cx="386.142" cy="301.77" r="10" transform="rotate(-135 386.142 301.77)" fill="#1E1E1E"></circle>
-<circle cx="408.77" cy="279.142" r="10" transform="rotate(-135 408.77 279.142)" fill="#1E1E1E"></circle>
+<circle class="b0" cx="409.477" cy="325.104" r="10" transform="rotate(-135 409.477 325.104)" fill="#1E1E1E"></circle>
+<circle class="b1" cx="432.104" cy="302.477" r="10" transform="rotate(-135 432.104 302.477)" fill="#1E1E1E"></circle>
+<circle class="b2" cx="386.142" cy="301.77" r="10" transform="rotate(-135 386.142 301.77)" fill="#1E1E1E"></circle>
+<circle class="b3" cx="408.77" cy="279.142" r="10" transform="rotate(-135 408.77 279.142)" fill="#1E1E1E"></circle>
 <rect x="254" y="264" width="10" height="20" rx="5" fill="#1E1E1E"></rect>
 <rect x="460" y="274" width="20" height="20" fill="#1E1E1E"></rect>
 <rect x="448" y="246" width="24" height="7" fill="#D9D9D9"></rect>
