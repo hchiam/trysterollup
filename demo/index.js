@@ -1,11 +1,15 @@
 import { GameController } from "../trysterollup.js";
+import { Lsvg, LRsvg, PS5svg, Rsvg } from "./gamepadIconStrings.js";
 const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
 
 // .../?room=someNumberOrId
 const roomId_fromUrl =
   new URLSearchParams(window.location.search).get("room") || "room42";
 
 const hold3ButtonsFor3SecondsToRemapButtons = true;
+
+const gamepadsContainer = $("#gamepads");
 
 const game = new GameController({
   updateUi: updateUi,
@@ -164,21 +168,25 @@ function printPlayers() {
 function b() {
   if (!game.isManuallyRemappingButtons()) {
     down();
+    highlightPressedGamepadButton("b0");
   }
 }
 function a() {
   if (!game.isManuallyRemappingButtons()) {
     right();
+    highlightPressedGamepadButton("b1");
   }
 }
 function y() {
   if (!game.isManuallyRemappingButtons()) {
     left();
+    highlightPressedGamepadButton("b2");
   }
 }
 function x() {
   if (!game.isManuallyRemappingButtons()) {
     up();
+    highlightPressedGamepadButton("b3");
   }
 }
 function left() {
@@ -235,16 +243,16 @@ function rightAxisVertical(data) {
 
 function showGamepadButtons(gamepads) {
   if (!gamepads) {
-    $("#gamepads").innerHTML = "";
+    gamepadsContainer.innerHTML = "";
   } else {
     const html = [...gamepads] // need [...] for ChromeOS chrome
       .map((gamepad) => {
-        const showAxes = true;
-        // const showAxes = false;
+        // const showAxes = true; // WARNING: showing axes constantly updates view
+        const showAxes = false;
         const axes = showAxes
           ? `<pre>Axes:<br><span>${gamepad.axes
               .map((a) => String(Math.round(a * 100)).padStart(4, " ") + "%")
-              .map((a, i) => (i % 2 === 0 ? a + " " : a + "<br/><br/>"))
+              .map((a, i) => (i % 2 === 0 ? a + " " : a + "<br><br>"))
               .join("")}</span></pre>`
           : "";
 
@@ -260,31 +268,39 @@ function showGamepadButtons(gamepads) {
         </fieldset>`;
       })
       .join("");
-    if ($("#gamepads").innerHTML !== html) {
-      $("#gamepads").innerHTML = html;
+    const current = gamepadsContainer.innerHTML;
+    if (current !== html) {
+      gamepadsContainer.innerHTML = html;
     }
   }
 }
 
 const gamepadIconUnknown = $("#gamepad-icon-unknown").src;
-const gamepadIconPS5 = $("#gamepad-icon-ps5").src;
-const gamepadIconJoyConL = $("#gamepad-icon-joycon_L").src;
-const gamepadIconJoyConR = $("#gamepad-icon-joycon_R").src;
-const gamepadIconJoyConLR = $("#gamepad-icon-joycon_LR").src;
+const gamepadIconPS5 = PS5svg ?? $("#gamepad-icon-ps5").src;
+const gamepadIconJoyConL = Lsvg ?? $("#gamepad-icon-joycon_L").src;
+const gamepadIconJoyConR = Rsvg ?? $("#gamepad-icon-joycon_R").src;
+const gamepadIconJoyConLR = LRsvg ?? $("#gamepad-icon-joycon_LR").src;
 function showGamepadIcon(id) {
   id = id.replace(/ {2,}/g, " ");
   let image = gamepadIconUnknown;
   const testMatch = false && id.match(/Generic USB Joystick/);
   if (testMatch || id.match(/DualSense Wireless Controller/)) {
-    image = gamepadIconPS5;
+    return gamepadIconPS5;
   } else if (id.match(/Joy-Con \(L\)/)) {
-    image = gamepadIconJoyConL;
+    return gamepadIconJoyConL;
   } else if (id.match(/Joy-Con \(R\)/)) {
-    image = gamepadIconJoyConR;
+    return gamepadIconJoyConR;
   } else if (id.match(/Joy-Con L\+R/)) {
-    image = gamepadIconJoyConLR;
+    return gamepadIconJoyConLR;
   }
   return `<img class="gamepad-icon" src="${image}">`;
+}
+
+function highlightPressedGamepadButton(className) {
+  gamepadsContainer.classList.add(className);
+  setTimeout(() => {
+    gamepadsContainer.classList.remove(className);
+  }, 100);
 }
 
 console.log("https://github.com/hchiam/trysterollup");

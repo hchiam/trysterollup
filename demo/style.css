@@ -1,0 +1,12 @@
+:root {
+    --btn-on: yellow;
+}
+
+.b0 svg.gamepadIcon .b0,
+.b1 svg.gamepadIcon .b1,
+.b2 svg.gamepadIcon .b2,
+.b3 svg.gamepadIcon .b3,
+.b4 svg.gamepadIcon .b4,
+.b5 svg.gamepadIcon .b5 {
+    fill: var(--btn-on)
+}

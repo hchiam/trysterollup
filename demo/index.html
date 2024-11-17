@@ -41,6 +41,7 @@
         display: none;
       }
     </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div id="hidden_images_to_get_compilation_to_work">
@@ -49,22 +50,10 @@
         src="./assets/controller_unknown.png"
         alt=""
       />
-      <img id="gamepad-icon-ps5" src="./assets/controller_ps5.png" alt="" />
-      <img
-        id="gamepad-icon-joycon_L"
-        src="./assets/controller_joycon_L.png"
-        alt=""
-      />
-      <img
-        id="gamepad-icon-joycon_R"
-        src="./assets/controller_joycon_R.png"
-        alt=""
-      />
-      <img
-        id="gamepad-icon-joycon_LR"
-        src="./assets/controller_joycon_L+R.png"
-        alt=""
-      />
+      <img id="gamepad-icon-ps5" src="./assets/PS5.svg" alt="" />
+      <img id="gamepad-icon-joycon_L" src="./assets/L.svg" alt="" />
+      <img id="gamepad-icon-joycon_R" src="./assets/R.svg" alt="" />
+      <img id="gamepad-icon-joycon_LR" src="./assets/L+R.svg" alt="" />
     </div>
     <h1>trysterollup-demo</h1>
     <fieldset>
@@ -75,6 +64,14 @@
         <button id="join">JOIN</button>
       </p>
     </fieldset>
+    <div>
+      <p>
+        To remap buttons: <button id="remap">click me</button> or hold down 3
+        buttons for 3 seconds. <span id="remapTimingInstruction"></span>
+      </p>
+    </div>
+    <p id="remapMessage"></p>
+    <div id="gamepads"></div>
     <button id="update">update</button>
     <button id="play">play</button>
     <div>
@@ -87,15 +84,6 @@
     <div>
       <button id="copyDoc">copy documentation to clipboard</button>
     </div>
-    <br />
-    <div>
-      <p>
-        To remap buttons: <button id="remap">click me</button> or hold down 3
-        buttons for 3 seconds. <span id="remapTimingInstruction"></span>
-      </p>
-    </div>
-    <p id="remapMessage"></p>
-    <div id="gamepads"></div>
     <script type="module" src="index.js"></script>
     <script type="module" src="generateDocumentation.js"></script>
   </body>
