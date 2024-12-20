@@ -65,13 +65,12 @@ ${this.getProperties(yourClassHere).join("\n\n")}
 }
 
 const docGenerator = new DocumentationGenerator({ classRef: GameController });
-const documentation = docGenerator.generateDocumentation();
-// console.log(documentation);
-
 // window.copyDoc = function () {
 //   copy(documentation);
 // };
 $("#copyDoc").addEventListener("click", () => {
+  const documentation = docGenerator.generateDocumentation();
+  // console.log(documentation);
   copy(documentation);
 });
 
